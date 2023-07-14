@@ -2,9 +2,9 @@
 
 Deny and Conquer is a multiplayer real-time game written in Java using socket programing.
 
-July 14 Meeting Notes: 
+# July 14 Meeting Notes: 
 
-## Roles: 
+# Roles: 
 Communication: (George & Niall)
 - handles client-to-server communication
 - message passing
@@ -12,7 +12,7 @@ Communication: (George & Niall)
 GUI: (Teeya, Benjamin, Joaquin)
 - handles game development
 
-## Plans:
+# Plans:
 - will support 2 to 4 players
 
 Server Side: 
