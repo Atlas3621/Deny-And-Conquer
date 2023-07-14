@@ -1,4 +1,4 @@
-# Deny and Conquer
+# Deny and Conquer - Due August 6
 
 Deny and Conquer is a multiplayer real-time game written in Java using socket programing.
 
