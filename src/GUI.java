@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+// TODO: Look at generalizing these numbers later
 public class GUI extends Application {
 
     @Override
@@ -32,11 +33,13 @@ public class GUI extends Application {
                 canvasToAdd.setTranslateX(startPosX + (48.0f * i));
                 canvasToAdd.setTranslateY(startPosY + (48.0f * j));
 
-                // Drawing a box around each canvas (the "border")
+                // Setting a line width and a stroke color
                 GraphicsContext context = canvasToAdd.getGraphicsContext2D();
                 context.setStroke(Color.BLACK);
                 context.setLineWidth(3);
-                context.strokeRect(0, 0, 30, 30);
+
+                // Drawing our border
+                canvasToAdd.drawBorder();
 
                 // Adding to our grid list
                 gridList.add(canvasToAdd);
@@ -73,7 +76,7 @@ public class GUI extends Application {
                     counterCanvas.resetCtr();
 
                     // Draw border again
-                    context.strokeRect(0, 0, 30, 30);
+                    counterCanvas.drawBorder();
                 });
             }
 
@@ -116,8 +119,10 @@ public class GUI extends Application {
                         PixelWriter canvasWriter = targetCanvas.getGraphicsContext2D().getPixelWriter();
 
                         // We now want to figure out where we actually pressed in our canvas
+                        System.out.println("Mouse Event Y: " + mouseEvent.getY() + "\ntopLeftY: " + topLeftY);
                         int pressedX = (int) mouseEvent.getX() - (int) topLeftX;
                         int pressedY = (int) mouseEvent.getY() - (int) topLeftY;
+                        System.out.println(pressedY);
 
                         // Let us make it easier than requiring pixel drawing and give a brush size of 2.
                         // We will originate the brush at the top left
@@ -125,18 +130,33 @@ public class GUI extends Application {
 
                         for (int i = 0; i < brushSize; i++) {
                             for (int j = 0; j < brushSize; j++) {
-                                canvasWriter.setColor(pressedX + i, pressedY + j, Color.BLACK);
+
+                                // Border Collision Checking (Appears to work)
+                                boolean pixelIsInsideX = (pressedX + i) <= 26 && (pressedX + i) >= 2;
+                                boolean pixelIsInsideY = (pressedY + i) <= 26 && (pressedY + i) >= 2;
+
+                                // TODO: A problem here is that we don't check if the pixel was already filled
+                                // If we do not collide with the border, draw the pixel
+                                if (pixelIsInsideX && pixelIsInsideY) {
+                                    canvasWriter.setColor((pressedX + i), (pressedY + j), Color.RED);
+                                    // Track the # of filled pixels in the canvas:
+                                    targetCanvas.incrementCtr(1);
+                                }
+
                             }
                         }
 
-                        // Track the # of filled pixels in the canvas:
-                        targetCanvas.incrementCtr(4);
                     }
 
-                    int canvasArea = (int) targetCanvas.getWidth() * (int) targetCanvas.getHeight();
+                    // Calculate a canvas area, based on our fill-able area
+                    int twiceLineWidth = (int) (targetCanvas.getGraphicsContext2D().getLineWidth() * 2);
+                    int canvasArea = ((int) targetCanvas.getWidth() - twiceLineWidth) * ((int) targetCanvas.getHeight() - twiceLineWidth);
 
+                    // Once the # of pixels drawn is > half the canvas area, fill the square
                     if (targetCanvas.getCtr() > 0.5 * canvasArea) {
-                        targetCanvas.getGraphicsContext2D().fillRect(0, 0, 30, 30);
+                        targetCanvas.getGraphicsContext2D().setFill(Color.RED);
+                        // TODO: Determining Proper Values for Here (v, v1, v2, v3)
+                        targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
                         targetCanvas.filled = true;
                     }
 

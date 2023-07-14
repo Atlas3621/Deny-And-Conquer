@@ -1,4 +1,6 @@
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class CounterCanvas extends Canvas {
     private int counter;
@@ -21,5 +23,10 @@ public class CounterCanvas extends Canvas {
     public void resetCtr() {
         this.counter = 0;
         this.filled = false;
+    }
+
+    public void drawBorder() {
+        GraphicsContext context = this.getGraphicsContext2D();
+        context.strokeRect(0, 0, 30, 30);
     }
 }
