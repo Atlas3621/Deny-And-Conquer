@@ -11,6 +11,7 @@ Communication: (George & Niall)
 
 GUI: (Teeya, Benjamin, Joaquin)
 - handles game development
+- will be done with java swift
 
 # Plans:
 - will support 2 to 4 players
