@@ -34,6 +34,7 @@ Client Side:
 
 Others
 - UI for the starting player to create the server
+- Remember to comment your code as you go!
 
 
   
