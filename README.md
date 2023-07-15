@@ -18,14 +18,14 @@ GUI: (Teeya, Benjamin, Joaquin)
 
 Server Side: 
 - will receive every stroke made by any user
-- will send a message to all other clients that the box is in use (drawing)
-- locking/unlocking (shared object)
-- play until all squares all locked
-- server will decide on a winner
-- terminate all connections at the game
-- checks if the box is filled over 50%
-  - if filled, keep lock and fully set colour
-  - if not, unlock box and fully set to white
+- will send a message to all other clients when a box is in use (drawing)
+- will handle the locking/unlocking (shared object)
+- play until all squares are locked
+- server will relay the winning results to the clients
+- terminate all connections at the end of the game
+- will check if the box is over 50% filled
+  - if filled, keep the cell locked and fully set colour
+  - if not, unlock the box and fully set the colour back to white
 
 Client Side:
 - handles the colouring
@@ -33,7 +33,7 @@ Client Side:
 - on box click, send a lock message
 - on box release, send a "check" message, the server will decide if the box is done or not
 
-Others
+Others:
 - UI for the starting player to create the server
 - Remember to comment your code as you go!
 
