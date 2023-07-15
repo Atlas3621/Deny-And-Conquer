@@ -30,3 +30,6 @@ bin/
 
 ### IntelliJ ###
 .idea/
+
+### Test Files ###
+src/Client.java

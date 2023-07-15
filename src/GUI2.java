@@ -20,9 +20,9 @@ import java.util.ArrayList;
 // TODO: Look at generalizing these numbers later
 
 /**
- * One client for the Deny-And-Conquer Game
+ * The other client for the Deny-And-Conquer Game
  */
-public class GUI extends Application {
+public class GUI2 extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -106,7 +106,7 @@ public class GUI extends Application {
 
         // Creating our Scene
         Scene scene = new Scene(rectGrid, 400, 600);
-        stage.setTitle("Deny and Conquer: Player 1");
+        stage.setTitle("Deny and Conquer: Player 2");
 
         // Handling a mouse click
         scene.setOnMouseDragged(mouseEvent -> {
