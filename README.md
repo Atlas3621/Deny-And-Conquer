@@ -37,5 +37,6 @@ Others
 - UI for the starting player to create the server
 - Remember to comment your code as you go!
 
-
+# Basic JavaFX Branch Instructions
+To run this, you want to run the **Server** first, then *GUI*, and then *GUI2*. I have tested it in both ways, and in my testing, it should not matter which one (of GUI and GUI2) you run first.
   
