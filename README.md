@@ -2,6 +2,26 @@
 
 Deny and Conquer is a multiplayer real-time game written in Java using socket programing.
 
+# Running:
+To run outside of IDE:
+1. Make sure javafx is installed on your machine - [Guide](https://openjfx.io/openjfx-docs/#install-javafx)
+
+2. Modify Makefile - set JAVAFX_LIB to path to your javafx lib.
+e.g.,
+```shell
+JAVAFX_LIB = /opt/javafx-sdk-20.0.1/lib
+```
+
+3. start server:
+```shell 
+$ make start_server
+```
+
+4. start GUI/client:
+```shell
+$ make run
+```
+
 # July 14 Meeting Notes: 
 
 # Roles: 
