@@ -31,5 +31,6 @@ bin/
 ### IntelliJ ###
 .idea/
 
-### Test Files ###
-src/Client.java
+### compiled code ###
+*/*.class
+bin/*
