@@ -6,13 +6,12 @@ JAVAFX_LIB = /opt/javafx-sdk-20.0.1/lib
 
 # Compiler and flags
 JAVAC = javac
-JAVAC_FLAGS = -d bin -sourcepath src --module-path $(JAVAFX_LIB) --add-modules javafx.controls,javafx.fxml
+JAVAC_FLAGS = -d bin -sourcepath src
+JAVAFX_FLAGS = --module-path $(JAVAFX_LIB) --add-modules javafx.controls,javafx.fxml
 
 # Executable
 MAIN_CLASS = GUI
 SERVER_CLASS = Server
-
-
 
 # Source and build directories
 SRC_DIR = src
@@ -30,16 +29,16 @@ all: $(TARGET)
 
 $(TARGET): $(SOURCES)
 	@mkdir -p $(BUILD_DIR)
-	$(JAVAC) $(JAVAC_FLAGS) $(SOURCES)
+	$(JAVAC) $(JAVAC_FLAGS) $(JAVAFX_FLAGS) $(SOURCES)
 
 clean:
 	rm -rf $(BUILD_DIR)
 
-start_server:
+start_server: all
 	@echo "Starting the server"
-	java --module-path $(JAVAFX_LIB) --add-modules javafx.controls,javafx.fxml -cp $(BUILD_DIR) $(SERVER_CLASS)
+	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(SERVER_CLASS)
 
 
-run:
+run: all
 	@echo "Make sure the server is running, otherwise this will crash"
-	java --module-path $(JAVAFX_LIB) --add-modules javafx.controls,javafx.fxml -cp $(BUILD_DIR) $(MAIN_CLASS)
+	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(MAIN_CLASS)
