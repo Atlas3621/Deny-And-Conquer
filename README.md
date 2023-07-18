@@ -17,9 +17,14 @@ JAVAFX_LIB = /opt/javafx-sdk-20.0.1/lib
 $ make start_server
 ```
 
-4. start GUI/client:
+4. start client1:
 ```shell
-$ make run
+$ make gui1
+```
+
+5. start client2:
+```shell
+$ make gui2
 ```
 
 # July 14 Meeting Notes: 

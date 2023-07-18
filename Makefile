@@ -10,7 +10,8 @@ JAVAC_FLAGS = -d bin -sourcepath src
 JAVAFX_FLAGS = --module-path $(JAVAFX_LIB) --add-modules javafx.controls,javafx.fxml
 
 # Executable
-MAIN_CLASS = GUI
+GUI1 = GUI
+GUI2 = GUI2
 SERVER_CLASS = Server
 
 # Source and build directories
@@ -21,7 +22,7 @@ BUILD_DIR = bin
 SOURCES := $(shell find $(SRC_DIR) -name '*.java')
 
 # Build target
-TARGET = $(BUILD_DIR)/$(MAIN_CLASS).class
+TARGET = $(BUILD_DIR)/$(GUI1).class
 
 .PHONY: all clean run
 
@@ -39,6 +40,9 @@ start_server: all
 	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(SERVER_CLASS)
 
 
-run: all
+run gui1: all
 	@echo "Make sure the server is running, otherwise this will crash"
-	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(MAIN_CLASS)
+	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(GUI1)
+run gui2: all
+	@echo "Make sure the server is running, otherwise this will crash"
+	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(GUI2)
