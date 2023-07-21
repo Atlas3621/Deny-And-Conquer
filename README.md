@@ -63,5 +63,5 @@ Others
 - Remember to comment your code as you go!
 
 # Basic JavaFX Branch Instructions
-To run this, you want to run the **Server** first, then *GUI*, and then *GUI2*. I have tested it in both ways, and in my testing, it should not matter which one (of GUI and GUI2) you run first.
+To run this, you want to run the **Server** first, then *GUI*, and then *ClientGUI*. I have tested it in both ways, and in my testing, it should not matter which one (of GUI and ClientGUI) you run first.
   

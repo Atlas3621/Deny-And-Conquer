@@ -7,8 +7,13 @@ import java.util.Objects;
 /**
  * The TCP Server Class for our Deny and Conquer Game
  */
-public class Server
+public class Server implements Runnable
 {
+    /**
+     * Help with creating a new server
+     */
+    public InetAddress address;
+    public ServerSocket server;
     /**
      * This ArrayList stores all of our valid (connected) clients.
      * It is useful for when we need to broadcast to all of the clients.
@@ -35,10 +40,19 @@ public class Server
         return choice;
     }
 
-    public static void main(String[] args) throws IOException {
+    public Server() throws IOException {
+        server = new ServerSocket(7070);
+        address = InetAddress.getByName("localhost");
+    }
 
-        ServerSocket server = new ServerSocket(7070);
 
+/*
+    public void start() throws IOException {
+
+    }
+*/
+    @Override
+    public void run() {
         // Resources that I have used. We use the Ref3 technique for a PoC here.
         // Ref: https://www.baeldung.com/a-guide-to-java-sockets
         // Ref2: https://stackoverflow.com/questions/26789754/handling-multiple-tcp-connections-in-java-server-side
@@ -49,7 +63,7 @@ public class Server
         while (true) {
             try {
                 // We accept a client and choose its color
-                Socket clientSocket = server.accept();
+                Socket clientSocket = this.server.accept();
                 Color drawing = chooseColor();
 
                 // If we cannot find a color, we just disconnect

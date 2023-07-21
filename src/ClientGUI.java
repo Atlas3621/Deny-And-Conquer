@@ -1,12 +1,9 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.PixelWriter;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -14,6 +11,7 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -22,7 +20,12 @@ import java.util.ArrayList;
 /**
  * The other client for the Deny-And-Conquer Game
  */
-public class GUI2 extends Application {
+public class ClientGUI extends Application {
+    private InetAddress ipAddress;
+
+    public ClientGUI (InetAddress ipAddress) {
+        this.ipAddress = ipAddress;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -57,7 +60,7 @@ public class GUI2 extends Application {
         gridList.forEach(x -> rectGrid.getChildren().add(x));
 
         // Start Client Side TCP Setup
-        Socket MySocket = new Socket("127.0.0.1", 7070);
+        Socket MySocket = new Socket(ipAddress, 7070);
 
         OutputStream os = MySocket.getOutputStream();
         InputStream is = MySocket.getInputStream();
@@ -194,9 +197,9 @@ public class GUI2 extends Application {
         stage.setResizable(false);
         stage.show();
     }
-
+/*
     public static void main(String[] args) {
         launch(args);
     }
-
+*/
 }

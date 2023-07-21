@@ -11,7 +11,7 @@ JAVAFX_FLAGS = --module-path $(JAVAFX_LIB) --add-modules javafx.controls,javafx.
 
 # Executable
 GUI1 = GUI
-GUI2 = GUI2
+ClientGUI = ClientGUI
 SERVER_CLASS = Server
 
 # Source and build directories
@@ -45,4 +45,4 @@ run gui1: all
 	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(GUI1)
 run gui2: all
 	@echo "Make sure the server is running, otherwise this will crash"
-	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(GUI2)
+	java $(JAVAFX_FLAGS) -cp $(BUILD_DIR) $(ClientGUI)
