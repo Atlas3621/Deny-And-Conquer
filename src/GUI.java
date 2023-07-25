@@ -77,51 +77,48 @@ public class GUI extends Application {
         assert(JoinButton instanceof Button);
         Button JB = (Button) JoinButton;
 
-        JB.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                JB.setText("Connecting...");
+        JB.addEventHandler(ActionEvent.ACTION, actionEvent -> {
+            JB.setText("Connecting...");
 
-                Task<Boolean> task = new Task<Boolean>() {
-                    @Override
-                    protected Boolean call() throws Exception {
-                        Node IPField = mainScene.lookup("#JGTA");
-                        assert (IPField instanceof TextField);
-                        TextField IPTF = (TextField) IPField;
+            Task<Boolean> task = new Task<>() {
+                @Override
+                protected Boolean call() {
+                    Node IPField = mainScene.lookup("#JGTA");
+                    assert (IPField instanceof TextField);
+                    TextField IPTF = (TextField) IPField;
 
-                        return isValidAddress(IPTF);
+                    return isValidAddress(IPTF);
+                }
+            };
+
+            task.setOnSucceeded(e -> {
+                if (!task.getValue()) {
+                    // ref: https://www.tutorialspoint.com/how-to-create-an-alert-in-javafx
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Input Error");
+                    alert.setContentText("You have entered an invalid server address. No host is known by this name");
+                    alert.showAndWait();
+                }
+
+                JB.setText("Join Game");
+                task.cancel();
+
+                if (task.getValue()) {
+                    Node IPField = mainScene.lookup("#JGTA");
+                    assert (IPField instanceof TextField);
+                    TextField IPTF = (TextField) IPField;
+
+                    try {
+                        InetAddress address = InetAddress.getByName(IPTF.getCharacters().toString());
+                        ClientGUI myGUI = new ClientGUI(address);
+                        myGUI.start(stage);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
                     }
-                };
+                }
+            });
 
-                task.setOnSucceeded(e -> {
-                    if (!task.getValue()) {
-                        Alert alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Invalid Input Error");
-                        alert.setContentText("You have entered an invalid server address. No host is known by this name");
-                        alert.showAndWait();
-                    }
-
-                    JB.setText("Join Game");
-                    task.cancel();
-
-                    if (task.getValue()) {
-                        Node IPField = mainScene.lookup("#JGTA");
-                        assert (IPField instanceof TextField);
-                        TextField IPTF = (TextField) IPField;
-
-                        try {
-                            InetAddress address = InetAddress.getByName(IPTF.getCharacters().toString());
-                            ClientGUI myGUI = new ClientGUI(address);
-                            myGUI.start(stage);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-                });
-
-                new Thread(task).start();
-            }
-
+            new Thread(task).start();
         });
     }
 
