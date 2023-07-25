@@ -60,7 +60,7 @@ public class GUI extends Application {
         NB.setOnAction(mouseEvent -> {
             try {
 
-                Server myServer = new Server();
+                Server myServer = new Server(30, 5, 5, 3);
                 Thread serverThread = new Thread(myServer);
 
                 serverThread.start();
@@ -123,86 +123,6 @@ public class GUI extends Application {
             }
 
         });
-        /*
-        JB.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                /*
-                runLater(() -> JB.setText("Connecting..."));
-
-                runLater(() -> {
-                    Node IPField = mainScene.lookup("#JGTA");
-                    assert (IPField instanceof TextField);
-                    TextField IPTF = (TextField) IPField;
-
-                    boolean isValid = isValidAddress(IPTF);
-                    System.out.println(isValid);
-                });
-                System.out.println("HI");*/
-                /*
-                try {
-                    InetAddress.getByName(IPTF.getText());
-                } catch (UnknownHostException e) {
-                    // ref: https://www.tutorialspoint.com/how-to-create-an-alert-in-javafx
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Invalid Input Error");
-                    alert.setContentText("You have entered an invalid server address. No host is known by this name");
-                    alert.showAndWait();
-                }
-            }
-        });
-        /*
-        JB.setOnAction(mouseEvent -> {
-            JB.setText("Connecting...");
-
-            Node IPField = mainScene.lookup("#JGTA");
-            assert (IPField instanceof TextField);
-            TextField IPTF = (TextField) IPField;
-
-            try {
-                InetAddress.getByName(IPTF.getText());
-            } catch (UnknownHostException e) {
-                // ref: https://www.tutorialspoint.com/how-to-create-an-alert-in-javafx
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Input Error");
-                alert.setContentText("You have entered an invalid server address. No host is known by this name");
-                alert.showAndWait();
-            }
-
-            try {
-
-                Node IPField = mainScene.lookup("#JGTA");
-                assert (IPField instanceof TextField);
-                TextField IPTF = (TextField) IPField;
-
-                // ref: https://stackoverflow.com/questions/11506321/how-to-ping-an-ip-address
-                InetAddress address = InetAddress.getByName(IPTF.getCharacters().toString());
-                boolean reachable = address.isReachable(10000);
-
-                if (reachable) {
-                    ClientGUI myGUI = new ClientGUI(InetAddress.getByName(IPTF.getCharacters().toString()));
-                    myGUI.start(stage);
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Connection Error");
-                    alert.setContentText("You have entered a valid IP address for the server, but it is unreachable.");
-                    alert.showAndWait();
-                }
-
-            } catch (UnknownHostException e) {
-
-                // ref: https://www.tutorialspoint.com/how-to-create-an-alert-in-javafx
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Input Error");
-                alert.setContentText("You have entered an invalid server address. No host is known by this name");
-                alert.showAndWait();
-
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            } finally {
-                JB.setText("Join Game");
-            }*/
-        //});
     }
 
     public static void main(String[] args) {

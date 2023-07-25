@@ -1,7 +1,18 @@
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.image.PixelWriter;
-import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import tokens.ClearToken;
+import tokens.DrawToken;
+import tokens.FillToken;
+import tokens.WinnerToken;
 
-import java.awt.*;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -31,32 +42,88 @@ public class DrawClientThread extends Thread {
             BufferedReader in = new BufferedReader(new InputStreamReader((socket.getInputStream())));
 
             String inStr, outStr;
+
             while ((inStr = in.readLine()) != null) {
                 // An if statement to handle the "DRAW" tokens
                 if (inStr.startsWith("DRAW")) {
-
-                    Color colorToUse = Color.web(inStr.substring(6, 14));
-                    int square = Integer.parseInt(inStr.substring(14, 16));
-                    int xCord = Integer.parseInt(inStr.substring(16, 18));
-                    int yCord = Integer.parseInt(inStr.substring(18, 20));
-
-                    PixelWriter squareWriter = rectList.get(square).getGraphicsContext2D().getPixelWriter();
-                    squareWriter.setColor(xCord, yCord, colorToUse);
+                    // A cleaner way of handling tokens (we can hide away the parsing in the class, avoiding code reuse)
+                    DrawToken fromInput = new DrawToken(inStr);
+                    PixelWriter squareWriter = rectList.get(fromInput.getSquareNum()).getGraphicsContext2D().getPixelWriter();
+                    squareWriter.setColor(fromInput.getxCord(), fromInput.getyCord(), fromInput.getDrawColor());
                 }
 
                 // An if statement to handle the "FILL" tokens
                 if (inStr.startsWith("FILL")) {
-                    Color colorToUse = Color.web(inStr.substring(6, 14));
-                    int square = Integer.parseInt(inStr.substring(14, 16));
-
-                    CounterCanvas targetCanvas = rectList.get(square);
-                    targetCanvas.getGraphicsContext2D().setFill(colorToUse);
+                    // Parsing Input w/ New Way
+                    FillToken fromInput = new FillToken(inStr);
+                    // Filling the grid entry (client-side)
+                    CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
+                    targetCanvas.getGraphicsContext2D().setFill(fromInput.getDrawColor());
                     targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
                     targetCanvas.filled = true;
                 }
 
+                if (inStr.startsWith("CLEAR")) {
+                    // Parsing Input w/ New Way
+                    ClearToken fromInput = new ClearToken(inStr);
+                    // Clearing the grid entry (client-side)
+                    CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
+                    targetCanvas.resetCanvas();
+                }
+
+                if (inStr.startsWith("WINNER")) {
+                    // Parsing Input w/ New Way
+                    WinnerToken fromInput = new WinnerToken(inStr);
+                    // Constructing scene displaying winner's color on client side
+                    Scene canvasScene = this.rectList.get(0).getScene();
+
+                    Group rectGrid = new Group();
+
+                    Text topText = new Text(22, 86, "The Colour...");
+                    topText.setWrappingWidth(356);
+                    topText.setTextAlignment(TextAlignment.LEFT);
+                    topText.setFont(new Font(20));
+                    rectGrid.getChildren().add(topText);
+
+                    Canvas winnerColor = new Canvas(356, 173);
+                    winnerColor.setTranslateX(22);
+                    winnerColor.setTranslateY(108);
+                    winnerColor.getGraphicsContext2D().setFill(fromInput.getDrawColor());
+                    winnerColor.getGraphicsContext2D().fillRect(0, 0, 356, 173);
+                    rectGrid.getChildren().add(winnerColor);
+
+                    Text bottomText = new Text(22, 317, "has won deny and conquer!");
+                    bottomText.setWrappingWidth(356);
+                    bottomText.setTextAlignment(TextAlignment.LEFT);
+                    bottomText.setFont(new Font(20));
+                    rectGrid.getChildren().add(bottomText);
+
+                    // ref: https://www.javaguides.net/2020/09/javafx-quit-button-example-terminate.html
+                    Button quitButton = new Button();
+                    quitButton.setLayoutX(249);
+                    quitButton.setLayoutY(406);
+                    quitButton.setPrefWidth(129);
+                    quitButton.setPrefHeight(40);
+                    quitButton.setText("Quit");
+                    quitButton.setOnAction((ActionEvent event) -> {
+                        Platform.exit();
+                    });
+
+                    rectGrid.getChildren().add(quitButton);
+
+                    canvasScene.setRoot(rectGrid);
+
+                    // Debugging output, can be removed later.
+                    System.out.println("CLIENT: The color " + fromInput.getDrawColor() + " has won the game of deny and conquer!");
+
+                    // Debugging to close server
+                    out.println("goodbye");
+                    System.out.println("CLIENT: sent goodbye to server");
+                }
+
                 // Disconnection string, as of yet unused
                 if (inStr.equals("goodbye")) {
+                    System.out.println("CLIENT: Accepting Goodbye");
                     break;
                 }
             }

@@ -2,18 +2,19 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import tokens.DrawToken;
+import tokens.LiftToken;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 // TODO: Look at generalizing these numbers later
 
@@ -85,32 +86,11 @@ public class ClientGUI extends Application {
         titleText.setFont(new Font(30));
         rectGrid.getChildren().add(titleText);
 
-        // Reset Button for the Demo
-        // TODO: This isn't integrated with TCP. Something to work on.
-        Button resetButton = new Button();
-        resetButton.setText("Reset the Canvas'");
-        resetButton.setTranslateX(125.0);
-        resetButton.setTranslateY(420.0);
-        resetButton.setPrefWidth(151.0);
-        resetButton.setPrefHeight(29.0);
-
-
-        resetButton.setOnAction(actionEvent -> gridList.forEach(counterCanvas -> {
-            // Reference: https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
-            GraphicsContext context = counterCanvas.getGraphicsContext2D();
-            context.clearRect(0, 0, counterCanvas.getWidth(), counterCanvas.getHeight());
-            counterCanvas.resetCtr();
-
-            // Draw border again
-            counterCanvas.drawBorder();
-        }));
-
-        rectGrid.getChildren().add(resetButton);
-
         // Creating our Scene
         Scene scene = new Scene(rectGrid, 400, 600);
-        stage.setTitle("Deny and Conquer: Player 2");
+        stage.setTitle("Deny and Conquer: Player View");
 
+        AtomicInteger lastSquare = new AtomicInteger();
         // Handling a mouse click
         scene.setOnMouseDragged(mouseEvent -> {
             if (mouseEvent.getTarget() instanceof CounterCanvas targetCanvas) {
@@ -133,8 +113,6 @@ public class ClientGUI extends Application {
                 if (isInsideX && isInsideY && !targetCanvas.filled) {
                     // Reference: https://stackoverflow.com/questions/28417623/the-fastest-filling-one-pixel-in-javafx
 
-                    PixelWriter canvasWriter = targetCanvas.getGraphicsContext2D().getPixelWriter();
-
                     // We now want to figure out where we actually pressed in our canvas
                     int pressedX = (int) mouseEvent.getX() - (int) topLeftX;
                     int pressedY = (int) mouseEvent.getY() - (int) topLeftY;
@@ -150,46 +128,29 @@ public class ClientGUI extends Application {
                             boolean pixelIsInsideX = (pressedX + i) <= 26 && (pressedX + i) >= 2;
                             boolean pixelIsInsideY = (pressedY + i) <= 26 && (pressedY + i) >= 2;
 
-                            // TODO: A problem here is that we don't check if the pixel was already filled. Should we?
                             // If we do not collide with the border, draw the pixel
                             if (pixelIsInsideX && pixelIsInsideY) {
-                                canvasWriter.setColor((pressedX + i), (pressedY + j), colourToUse);
-
                                 // We can use this formula to figure out what number square we are looking for
                                 int squareNum = (int) (((targetCanvas.getTranslateX() - startPosX) / 48 * 5) + (targetCanvas.getTranslateY() - startPosY) / 48);
-
-                                // Here we create our DRAW token and send it across with TCP
+                                lastSquare.set(squareNum);
+                                // Here we create our DRAW token and send it across with TCP. The server handles the rest.
                                 DrawToken token = new DrawToken(colourToUse, squareNum, (pressedX + i), (pressedY + j));
-                                out.println(token.toString());
-
-                                // Here we increment the canvas counter on our side to help us see if we have filled >50%
-                                targetCanvas.incrementCtr(1);
+                                out.println(token);
                             }
 
                         }
                     }
 
                 }
-
-                // Calculate a canvas area, based on our fill-able area
-                int twiceLineWidth = (int) (targetCanvas.getGraphicsContext2D().getLineWidth() * 2);
-                int canvasArea = ((int) targetCanvas.getWidth() - twiceLineWidth) * ((int) targetCanvas.getHeight() - twiceLineWidth);
-
-                // Once the # of pixels drawn is > half the canvas area, fill the square
-                if (targetCanvas.getCtr() > 0.5 * canvasArea) {
-                    // Send a message to the server that this is now "claimed" by the client
-                    int squareNum = (int) (((targetCanvas.getTranslateX() - startPosX) / 48 * 5) + (targetCanvas.getTranslateY() - startPosY) / 48);
-                    FillToken token = new FillToken(colourToUse, squareNum);
-                    out.println(token.toString());
-
-                    // Actually fill out the canvas with our server-provided color and mark the canvas as filled
-                    targetCanvas.getGraphicsContext2D().setFill(colourToUse);
-                    // TODO: Determining Proper Values for Here (v, v1, v2, v3)
-                    targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
-                    targetCanvas.filled = true;
-                }
-
             }
+        });
+
+
+        // Handling Mouse Lifting
+        scene.setOnMouseReleased(mouseDragEvent -> {
+            int squareExited = lastSquare.get();
+            LiftToken newToken = new LiftToken(colourToUse, squareExited);
+            out.println(newToken);
         });
 
         // Setting up the window and making it non-resizeable
@@ -197,9 +158,5 @@ public class ClientGUI extends Application {
         stage.setResizable(false);
         stage.show();
     }
-/*
-    public static void main(String[] args) {
-        launch(args);
-    }
-*/
+
 }
