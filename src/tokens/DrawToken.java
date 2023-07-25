@@ -1,7 +1,10 @@
+package tokens;
+
 import javafx.scene.paint.Color;
 
 /**
- * A token class to represent "DRAW" tokens
+ * A token class to represent "DRAW" tokens. These tokens are sent both from the client to the server, and from the server back to all clients,
+ * to indicate a color that has drawn on a given canvas in our grid.
  */
 public class DrawToken {
     private int squareNum, xCord, yCord;
@@ -19,6 +22,16 @@ public class DrawToken {
         this.squareNum = squareNum;
         this.xCord = xCord;
         this.yCord = yCord;
+    }
+
+    /**
+     * @param tokenString A String representation of this token transmitted over, say, TCP
+     */
+    public DrawToken (String tokenString) {
+        this.drawColor = Color.web(tokenString.substring(6, 14));
+        this.squareNum = Integer.parseInt(tokenString.substring(14, 16));
+        this.xCord = Integer.parseInt(tokenString.substring(16, 18));
+        this.yCord = Integer.parseInt(tokenString.substring(18, 20));
     }
 
     /**
@@ -44,5 +57,22 @@ public class DrawToken {
         }
 
         return "DRAW" + drawColor + sString + xString + yString;
+    }
+
+    // These getters here are useful for our "new" method parsing with the constructor
+    public Color getDrawColor() {
+        return drawColor;
+    }
+
+    public int getSquareNum() {
+        return squareNum;
+    }
+
+    public int getxCord() {
+        return xCord;
+    }
+
+    public int getyCord() {
+        return yCord;
     }
 }

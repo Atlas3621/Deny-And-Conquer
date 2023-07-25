@@ -1,24 +1,31 @@
 import javafx.scene.paint.Color;
+import javafx.util.Pair;
+import tokens.*;
 
 import java.io.*; import java.net.*;
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * The TCP Server Class for our Deny and Conquer Game
  */
-public class Server
+public class Server implements Runnable
 {
+    /**
+     * Help with creating a new server
+     */
+    public InetAddress address;
+    public ServerSocket server;
+    static Board gameBoard;
     /**
      * This ArrayList stores all of our valid (connected) clients.
      * It is useful for when we need to broadcast to all of the clients.
      */
-    static ArrayList<Socket> validClients = new ArrayList<>();
+    static ArrayList<Pair<Socket, Color>> validClients = new ArrayList<>();
     /**
      * This array stores a preset collection of colors for clients to choose from, and the orders in which they are chosen.
      * Effectively, the length of the array is the maximum # of clients we can have.
      */
-    static Color[] colorChoices = {Color.BLUE, Color.RED}; static int curChoice = 0;
+    static Color[] colorChoices = {Color.BLUE, Color.RED, Color.GREEN, Color.GOLD}; static int curChoice = 0;
 
     /**
      * Chooses a color for a newly connected client, checking if there are any colors left to choose
@@ -35,10 +42,14 @@ public class Server
         return choice;
     }
 
-    public static void main(String[] args) throws IOException {
+    public Server(int canvasSize, int xSize, int ySize, int lineWidth) throws IOException {
+        server = new ServerSocket(7070);
+        address = InetAddress.getByName("localhost");
+        gameBoard = new Board(canvasSize, xSize, ySize, lineWidth);
+    }
 
-        ServerSocket server = new ServerSocket(7070);
-
+    @Override
+    public void run() {
         // Resources that I have used. We use the Ref3 technique for a PoC here.
         // Ref: https://www.baeldung.com/a-guide-to-java-sockets
         // Ref2: https://stackoverflow.com/questions/26789754/handling-multiple-tcp-connections-in-java-server-side
@@ -49,7 +60,7 @@ public class Server
         while (true) {
             try {
                 // We accept a client and choose its color
-                Socket clientSocket = server.accept();
+                Socket clientSocket = this.server.accept();
                 Color drawing = chooseColor();
 
                 // If we cannot find a color, we just disconnect
@@ -66,7 +77,7 @@ public class Server
                 out.println(drawing);
 
                 // We then add the newly validated client to our list from above, and start a new thread for it.
-                validClients.add(clientSocket);
+                validClients.add(new Pair<Socket, Color>(clientSocket, drawing));
                 DrawServerThread t = new DrawServerThread(clientSocket);
                 t.start();
 
@@ -77,7 +88,7 @@ public class Server
     }
 
     /**
-     * Our class for threads for clients on the server-side
+     * Our class for threads communicating with clients on the server-side
      */
     private static class DrawServerThread extends Thread {
         private Socket socket = null;
@@ -107,20 +118,87 @@ public class Server
                     outStr = inStr;
                     String finalOutStr = outStr;
 
-                    // Broadcast our message to all clients that are not us (the current client).
-                    validClients.forEach(c -> {
-                        if (!c.equals(socket)) {
-                            try {
-                                PrintWriter cOut = new PrintWriter(c.getOutputStream(), true);
-                                cOut.println(finalOutStr);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                    if (outStr.startsWith("DRAW")) {
+                        DrawToken fromInput = new DrawToken(outStr);
+
+                        Color colorToUse = fromInput.getDrawColor();
+                        int square = fromInput.getSquareNum();
+                        int xCord = fromInput.getxCord();
+                        int yCord = fromInput.getyCord();
+
+                        if (gameBoard.isAvailableToDraw(colorToUse, square)) {
+
+                            gameBoard.setClaimed(colorToUse, square);
+                            gameBoard.drawPixel(square, colorToUse);
+
+                            validClients.forEach(s -> {
+                                try {
+
+                                    PrintWriter cOut = new PrintWriter(s.getKey().getOutputStream(), true);
+                                    cOut.println(new DrawToken(colorToUse, square, xCord, yCord));
+
+                                    if (gameBoard.checkFilled(colorToUse, square)) {
+                                        cOut.println(new FillToken(colorToUse, square));
+                                        gameBoard.setFilled(colorToUse, square);
+
+                                        if (gameBoard.winnerExists()) {
+                                            System.out.println("WE HAVE A WINNER");
+                                            cOut.println(new WinnerToken(gameBoard.colorOfWinner()));
+                                            //cOut.println("goodbye");
+                                        }
+                                    }
+
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+
                         }
-                    });
+
+                    } else if (outStr.startsWith("LIFT")) {
+                        LiftToken fromInput = new LiftToken(outStr);
+                        int squareToClear = fromInput.getSquareNum();
+
+                        if (gameBoard.isAvailableToDraw(fromInput.getDrawColor(), squareToClear)) {
+                            ClearToken newToken = new ClearToken(squareToClear);
+                            gameBoard.resetPiece(squareToClear);
+
+                            validClients.forEach(s -> {
+                                try {
+                                    PrintWriter cOut = new PrintWriter(s.getKey().getOutputStream(), true);
+                                    cOut.println(newToken);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+
+                        }
+
+                    } else {
+                        // Broadcast our message to all clients that are not us (the current client).
+                            validClients.forEach(s -> {
+                                if (!s.getKey().equals(socket)) {
+                                    try {
+                                        PrintWriter cOut = new PrintWriter(s.getKey().getOutputStream(), true);
+                                        cOut.println(finalOutStr);
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                            });
+                    }
 
                     // Disconnection string, as of yet unused
                     if (outStr.equals("goodbye")) {
+                        System.out.println("SERVER: Accepted Goodbye and Sending Goodbye to Clients");
+                        validClients.forEach(s -> {
+                            try {
+                                PrintWriter cOut = new PrintWriter(s.getKey().getOutputStream(), true);
+                                cOut.println("goodbye");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                         break;
                     }
                 }
