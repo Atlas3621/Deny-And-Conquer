@@ -65,7 +65,7 @@ Others
 # July 25 Meeting Notes
 - Project is mostly done, just a matter of splitting remaining duties now.
 - Goal is to have code mostly done by friday, hard deadline of next tuesday.
-## Token-Related Duties (T-Yah, Niall):
+## Token-Related Duties (Teeya, Niall):
 - Changing the win logic to allow for more players and allow for a draw state, not necessarily a win. Needs to check when all squares filled not majority.
 - Changing the logic with the FillToken to fill when cursor is lifted, rather than auto-filling when majority of square is filled.
 ## UI-Related Duties (Joaquin):
