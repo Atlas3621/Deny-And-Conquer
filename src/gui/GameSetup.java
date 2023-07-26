@@ -69,7 +69,7 @@ public class GameSetup extends Application {
 
                 serverThread.start();
 
-                Game myGUI = new Game(myServer.address, gameConfig);
+                Game myGUI = new Game(myServer.address);
                 myGUI.start(stage);
 
             } catch (Exception e) {

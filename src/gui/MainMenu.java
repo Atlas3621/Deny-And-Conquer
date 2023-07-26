@@ -3,7 +3,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-import game.settings.GameConfig;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -93,7 +92,7 @@ public class MainMenu extends Application {
 
                     try {
                         InetAddress address = InetAddress.getByName(IPTF.getCharacters().toString());
-                        Game myGUI = new Game(address, new GameConfig(5, 5));
+                        Game myGUI = new Game(address);
                         myGUI.start(stage);
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);

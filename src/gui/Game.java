@@ -31,11 +31,9 @@ import tokens.LiftToken;
  */
 public class Game extends Application {
     private InetAddress ipAddress;
-    private GameConfig gameConfig;
 
-    public Game (InetAddress ipAddress, GameConfig gameConfig) {
+    public Game (InetAddress ipAddress) {
         this.ipAddress = ipAddress;
-        this.gameConfig = gameConfig;
     }
 
     @Override
@@ -84,9 +82,6 @@ public class Game extends Application {
         double offsetX = (rectGrid.getBoundsInLocal().getWidth() +60 - 48 * gameConfig.getWidth()) / 2.0;
         final double startPosX = offsetX;
         final double startPosY = 148.0;
-
-        System.out.println("offsetX: " + offsetX);
-        System.out.println("grid row width: " + 48 * gameConfig.getWidth());
         
         for (int i = 0; i < gameConfig.getWidth(); i++) {
             for (int j = 0; j < gameConfig.getHeight(); j++) {
@@ -114,14 +109,10 @@ public class Game extends Application {
         Client t = new Client(gridList, MySocket);
         t.start();
 
-        
-        System.out.println(rectGrid.getBoundsInLocal().getWidth());
         // adjust window bounds based on the grid size
         double windowWidth = rectGrid.getBoundsInLocal().getWidth() + 40;
         double windowHeight = rectGrid.getBoundsInLocal().getHeight() + titleText.getBoundsInLocal().getHeight() + 60;
 
-        System.out.println("width: " + windowWidth);
-        System.out.println("height: " +windowHeight);
         // Creating our Scene
         Scene scene = new Scene(rectGrid, windowWidth, windowHeight);
         stage.setTitle("Deny and Conquer: Player View");

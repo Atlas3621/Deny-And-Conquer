@@ -69,7 +69,6 @@ public class GameConfig {
      * @return {@link Color} for the specified player
      */
     public Color getColorForPlayer(int playerId) {
-        System.out.println(playerId);
         return playerColors.get(playerId);
     }
 

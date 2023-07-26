@@ -68,7 +68,6 @@ public class Server implements Runnable
         colorChoices = config.getPlayerColors().toArray(colorChoices);
 
         this.gameConfig = config;
-        System.out.println(config.getWidth() + " " + config.getHeight());
         gameBoard = new Board(canvasSize, config.getWidth(), config.getHeight(), lineWidth);
     }
 
