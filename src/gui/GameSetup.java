@@ -55,7 +55,14 @@ public class GameSetup extends Application {
             // final copy of i, that can be used inside the listener below
             final int playerIndex = i;
             colorPicker.valueProperty().addListener((obs, old, c) -> {
-                gameConfig.changePlayerColor(playerIndex, c);
+                
+                // ensure that it is not possible for 2 players to have the same color
+                if(gameConfig.getPlayerColors().contains(c) && !gameConfig.getColorForPlayer(playerIndex).equals(c)){
+                    colorPicker.setValue(old);
+                }
+                else {
+                    gameConfig.changePlayerColor(playerIndex, c);
+                }
             });
         }
 
