@@ -21,7 +21,7 @@ public class GameConfig {
     protected ArrayList<Color> playerColors;
 
     protected final static ArrayList<Color> defaultColours = new ArrayList<Color>(
-        Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.GOLD, Color.DARKMAGENTA, Color.CYAN)
+        Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.YELLOW, Color.DARKMAGENTA, Color.CYAN)
     );
 
     /***
