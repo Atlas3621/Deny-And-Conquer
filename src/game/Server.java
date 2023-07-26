@@ -65,10 +65,10 @@ public class Server implements Runnable
         server = new ServerSocket(7070);
         address = InetAddress.getByName("localhost");
 
-        config.getPlayerColors().toArray(colorChoices);
+        colorChoices = config.getPlayerColors().toArray(colorChoices);
 
         this.gameConfig = config;
-
+        System.out.println(config.getWidth() + " " + config.getHeight());
         gameBoard = new Board(canvasSize, config.getWidth(), config.getHeight(), lineWidth);
     }
 

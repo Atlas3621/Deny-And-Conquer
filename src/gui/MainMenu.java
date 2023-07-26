@@ -3,6 +3,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
+import game.settings.GameConfig;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -35,7 +36,7 @@ public class MainMenu extends Application {
     public void start(Stage stage) throws Exception {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/resources/Menu_UI.fxml")));
-        Scene mainScene = new Scene(root, 300, 275);
+        Scene mainScene = new Scene(root);
 
         stage.setTitle("Deny And Conquer");
         stage.setScene(mainScene);
@@ -47,8 +48,8 @@ public class MainMenu extends Application {
 
         NB.setOnAction(mouseEvent -> {
             try {
-                Lobby lobbyView = new Lobby();
-                lobbyView.start(stage);
+                GameSetup gameSetupView = new GameSetup();
+                gameSetupView.start(stage);
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -92,7 +93,7 @@ public class MainMenu extends Application {
 
                     try {
                         InetAddress address = InetAddress.getByName(IPTF.getCharacters().toString());
-                        Game myGUI = new Game(address);
+                        Game myGUI = new Game(address, new GameConfig(5, 5));
                         myGUI.start(stage);
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);

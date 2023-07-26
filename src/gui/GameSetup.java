@@ -16,13 +16,13 @@ import javafx.stage.Stage;
 /**
  * Window for configuring the game and waiting for other players
  */
-public class Lobby extends Application {
+public class GameSetup extends Application {
     private EditableGameConfig gameConfig;
 
     @Override
     public void start(Stage stage) throws Exception {
 
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/resources/Lobby_UI.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/resources/GameSetup_UI.fxml")));
         Scene mainScene = new Scene(root);
 
         stage.setTitle("Deny And Conquer");
@@ -32,7 +32,7 @@ public class Lobby extends Application {
 
         // configuring width selector. Default value is 5
         ChoiceBox<Integer> widthSelector = (ChoiceBox<Integer>) mainScene.lookup("#Width-Selector");
-        widthSelector.getItems().addAll(1,2,3,4,5,6,7,8);
+        widthSelector.getItems().addAll(3,4,5,6,7,8);
         widthSelector.setValue(5);
         widthSelector.valueProperty().addListener((obs, old, w) -> {
             gameConfig.setWidth(w);
@@ -41,9 +41,9 @@ public class Lobby extends Application {
         // configuring height selector. Default value is 5
         ChoiceBox<Integer> heightSelector = (ChoiceBox<Integer>) mainScene.lookup("#Height-Selector");
         heightSelector.setValue(5);
-        heightSelector.getItems().addAll(1,2,3,4,5,6,7,8);
+        heightSelector.getItems().addAll(3,4,5,6,7,8);
         heightSelector.valueProperty().addListener((obs, old, h) -> {
-            gameConfig.setWidth(h);
+            gameConfig.setHeight(h);
         });
 
         
@@ -60,7 +60,7 @@ public class Lobby extends Application {
         }
 
 
-
+        // launch game server and start the game after start game was pressed
         Button startGame = (Button) mainScene.lookup("#Start-Game");
         startGame.setOnAction(mouseEvent -> {
             try {
@@ -69,14 +69,24 @@ public class Lobby extends Application {
 
                 serverThread.start();
 
-                Game myGUI = new Game(myServer.address);
+                Game myGUI = new Game(myServer.address, gameConfig);
                 myGUI.start(stage);
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
-        // 
+
+        // leave GameSetup and go back to main menu if exit was pressed
+        Button leaveGameSetup = (Button) mainScene.lookup("#Leave-GameSetup");
+        leaveGameSetup.setOnAction(mouseEvent -> {
+            try {
+                // go back to main menu
+                (new MainMenu()).start(stage);
+            } catch(Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         stage.show();
     }

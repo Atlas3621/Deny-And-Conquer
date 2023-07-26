@@ -19,7 +19,7 @@
                 <Font size="25.0" />
             </font>
         </Text>
-      <Text layoutX="189.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game lobby">
+      <Text layoutX="189.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Setup">
          <font>
             <Font size="20.0" />
          </font>
@@ -30,7 +30,7 @@
       <ChoiceBox id="Height-Selector" layoutX="160.0" layoutY="141.0" prefHeight="26.0" prefWidth="64.0" />
       <ButtonBar layoutX="211.0" layoutY="397.0" prefHeight="40.0" prefWidth="242.0">
         <buttons>
-              <Button id="Leave-Lobby" cancelButton="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="118.0" text="Leave lobby" />
+              <Button id="Leave-GameSetup" cancelButton="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="118.0" text="Leave" />
               <Button id="Start-Game" mnemonicParsing="false" text="Start Game" />
         </buttons>
       </ButtonBar>

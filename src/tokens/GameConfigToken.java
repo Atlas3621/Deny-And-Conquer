@@ -40,6 +40,13 @@ public class GameConfigToken{
         this.gameConfig = new GameConfig(width, height, colors);
     }
 
+    /**
+     * @return Game configuration coming from the server
+     */
+    public GameConfig getGameConfig() {
+        return this.gameConfig;
+    }
+
     @Override
     public String toString() {
         int width = gameConfig.getWidth();
@@ -50,7 +57,7 @@ public class GameConfigToken{
         
         String xColors = "";
         for(Color color : gameConfig.getPlayerColors()){
-            xColors += color;
+            xColors += color + " ";
         }
         return "GAME_CONFIG " + xWidth + " " + xHeight + " " + xColors;
     }

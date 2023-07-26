@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import game.Client;
+import game.settings.GameConfig;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import tokens.DrawToken;
+import tokens.GameConfigToken;
 import tokens.LiftToken;
 
 // TODO: Look at generalizing these numbers later
@@ -29,24 +31,15 @@ import tokens.LiftToken;
  */
 public class Game extends Application {
     private InetAddress ipAddress;
+    private GameConfig gameConfig;
 
-    public Game (InetAddress ipAddress) {
+    public Game (InetAddress ipAddress, GameConfig gameConfig) {
         this.ipAddress = ipAddress;
+        this.gameConfig = gameConfig;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-
-        // Creating our grid for deny and conquer
-        ArrayList<CounterCanvas> gridList = new ArrayList<CounterCanvas>();
-        float startPosX = 89.0f;
-        float startPosY = 148.0f;
-
-        
-
-        // Adding our grid to a Group
-        Group rectGrid = new Group();
-        gridList.forEach(x -> rectGrid.getChildren().add(x));
 
         // Start Client Side TCP Setup
         Socket MySocket = new Socket(ipAddress, 7070);
@@ -56,16 +49,28 @@ public class Game extends Application {
 
         PrintWriter out = new PrintWriter(os, true);
         BufferedReader in = new BufferedReader(new InputStreamReader(is));
-        // End Client Side TCP Setup
+        // End Client Side TCP Setup 
+        
+        // client receives two messages from the server before game begins:
+        // 1) Color of the current player - might change to # of the player later
+        // 2)  Game configuration: board size and colors of all players
+        // TCP guarantees that messages come in order so we don't need to worry about that 
 
-        // Reading in the colour that the server has provided us with
+        // 1) Reading in the colour that the server has provided us with
         String OurColour = in.readLine();
-        Color colourToUse = Color.web(OurColour);
+        Color playerColor = Color.web(OurColour);
+        // 2) Reading the game config
+        GameConfigToken gcToken = new GameConfigToken(in.readLine());
+        GameConfig gameConfig = gcToken.getGameConfig();
+        
 
-        // Starting up a client-side thread to help with TCP receiving
-        Client t = new Client(gridList, MySocket);
-        t.start();
+         // Creating our grid for deny and conquer
+        ArrayList<CounterCanvas> gridList = new ArrayList<CounterCanvas>();
 
+        int canvasWidth = 30, canvasHeight = 30;
+
+        // Adding our grid to a Group
+        Group rectGrid = new Group();
         // Create our Title Text
         Text titleText = new Text(22, 82, "Deny and Conquer");
         titleText.setWrappingWidth(356);
@@ -74,11 +79,19 @@ public class Game extends Application {
         titleText.setFont(new Font(30));
         rectGrid.getChildren().add(titleText);
 
+        // calculate the offset so that the grid is centered horizontally
+        // (window size - grid size) / 2.0
+        double offsetX = (rectGrid.getBoundsInLocal().getWidth() +60 - 48 * gameConfig.getWidth()) / 2.0;
+        final double startPosX = offsetX;
+        final double startPosY = 148.0;
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        System.out.println("offsetX: " + offsetX);
+        System.out.println("grid row width: " + 48 * gameConfig.getWidth());
+        
+        for (int i = 0; i < gameConfig.getWidth(); i++) {
+            for (int j = 0; j < gameConfig.getHeight(); j++) {
                 // The Spacing Stuff
-                CounterCanvas canvasToAdd = new CounterCanvas(30, 30);
+                CounterCanvas canvasToAdd = new CounterCanvas(canvasWidth, canvasHeight);
                 canvasToAdd.setTranslateX(startPosX + (48.0f * i));
                 canvasToAdd.setTranslateY(startPosY + (48.0f * j));
 
@@ -94,8 +107,23 @@ public class Game extends Application {
                 gridList.add(canvasToAdd);
             }
         }
+
+        gridList.forEach(x -> rectGrid.getChildren().add(x));
+
+        // Starting up a client-side thread to help with TCP receiving
+        Client t = new Client(gridList, MySocket);
+        t.start();
+
+        
+        System.out.println(rectGrid.getBoundsInLocal().getWidth());
+        // adjust window bounds based on the grid size
+        double windowWidth = rectGrid.getBoundsInLocal().getWidth() + 40;
+        double windowHeight = rectGrid.getBoundsInLocal().getHeight() + titleText.getBoundsInLocal().getHeight() + 60;
+
+        System.out.println("width: " + windowWidth);
+        System.out.println("height: " +windowHeight);
         // Creating our Scene
-        Scene scene = new Scene(rectGrid, 400, 600);
+        Scene scene = new Scene(rectGrid, windowWidth, windowHeight);
         stage.setTitle("Deny and Conquer: Player View");
 
         AtomicInteger lastSquare = new AtomicInteger();
@@ -139,10 +167,10 @@ public class Game extends Application {
                             // If we do not collide with the border, draw the pixel
                             if (pixelIsInsideX && pixelIsInsideY) {
                                 // We can use this formula to figure out what number square we are looking for
-                                int squareNum = (int) (((targetCanvas.getTranslateX() - startPosX) / 48 * 5) + (targetCanvas.getTranslateY() - startPosY) / 48);
+                                int squareNum = (int) (((targetCanvas.getTranslateX() - startPosX) / 48 * gameConfig.getHeight()) + (targetCanvas.getTranslateY() - startPosY) / 48);
                                 lastSquare.set(squareNum);
                                 // Here we create our DRAW token and send it across with TCP. The server handles the rest.
-                                DrawToken token = new DrawToken(colourToUse, squareNum, (pressedX + i), (pressedY + j));
+                                DrawToken token = new DrawToken(playerColor, squareNum, (pressedX + i), (pressedY + j));
                                 out.println(token);
                             }
 
@@ -157,7 +185,7 @@ public class Game extends Application {
         // Handling Mouse Lifting
         scene.setOnMouseReleased(mouseDragEvent -> {
             int squareExited = lastSquare.get();
-            LiftToken newToken = new LiftToken(colourToUse, squareExited);
+            LiftToken newToken = new LiftToken(playerColor, squareExited);
             out.println(newToken);
         });
 
