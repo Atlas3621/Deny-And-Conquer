@@ -1,38 +1,26 @@
+package gui;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Objects;
+
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
-import java.awt.event.MouseEvent;
-import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Objects;
-
-import static javafx.application.Platform.runLater;
 
 // TODO: Look at generalizing these numbers later
 
 /**
  * One client for the Deny-And-Conquer Game
  */
-public class GUI extends Application {
+public class MainMenu extends Application {
 
     public boolean isValidAddress(TextField IPTF) {
         try {
@@ -47,7 +35,7 @@ public class GUI extends Application {
     public void start(Stage stage) throws Exception {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/resources/Menu_UI.fxml")));
-        Scene mainScene = new Scene(root, 300, 275);
+        Scene mainScene = new Scene(root);
 
         stage.setTitle("Deny And Conquer");
         stage.setScene(mainScene);
@@ -59,14 +47,8 @@ public class GUI extends Application {
 
         NB.setOnAction(mouseEvent -> {
             try {
-
-                Server myServer = new Server(30, 5, 5, 3);
-                Thread serverThread = new Thread(myServer);
-
-                serverThread.start();
-
-                ClientGUI myGUI = new ClientGUI(myServer.address);
-                myGUI.start(stage);
+                GameSetup gameSetupView = new GameSetup();
+                gameSetupView.start(stage);
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
@@ -110,7 +92,7 @@ public class GUI extends Application {
 
                     try {
                         InetAddress address = InetAddress.getByName(IPTF.getCharacters().toString());
-                        ClientGUI myGUI = new ClientGUI(address);
+                        Game myGUI = new Game(address);
                         myGUI.start(stage);
                     } catch (Exception ex) {
                         throw new RuntimeException(ex);

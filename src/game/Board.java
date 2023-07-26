@@ -1,7 +1,8 @@
-import javafx.scene.paint.Color;
-
+package game;
 import java.util.ArrayList;
 import java.util.Hashtable;
+
+import javafx.scene.paint.Color;
 
 /**
  * The "Board" class is used as a server-side representation of the deny-and-conquer game board.

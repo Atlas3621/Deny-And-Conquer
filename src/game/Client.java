@@ -1,3 +1,13 @@
+package game;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.util.ArrayList;
+
+import gui.CounterCanvas;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -13,14 +23,10 @@ import tokens.DrawToken;
 import tokens.FillToken;
 import tokens.WinnerToken;
 
-import java.net.*;
-import java.io.*;
-import java.util.ArrayList;
-
 /**
  * An extension of the thread class used in the GUI/Client class to help with TCP
  */
-public class DrawClientThread extends Thread {
+public class Client extends Thread {
     private Socket socket = null;
     private ArrayList<CounterCanvas> rectList = null;
 
@@ -28,8 +34,8 @@ public class DrawClientThread extends Thread {
      * @param list The list of CounterCanvas's representing the initial grid
      * @param socket The client socket from the GUI
      */
-    public DrawClientThread(ArrayList<CounterCanvas> list, Socket socket) {
-        super("DrawClientThread");
+    public Client(ArrayList<CounterCanvas> list, Socket socket) {
+        super("ClientThread");
         this.socket = socket;
         this.rectList = list;
     }
