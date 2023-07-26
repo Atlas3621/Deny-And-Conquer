@@ -1,9 +1,9 @@
 package settings;
 
-import javafx.scene.paint.Color;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import javafx.scene.paint.Color;
 
 /*
  * Class for representing a game configuration - configurable by game creator
@@ -12,16 +12,16 @@ public class GameConfig {
     /*
      * Width and Height of the board
      */
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
 
     /*
      * Colours for players
      */
-    private ArrayList<Color> playerColors;
+    protected ArrayList<Color> playerColors;
 
-    private final static ArrayList<Color> defaultColours = new ArrayList<Color>(
-        Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.GOLD)
+    protected final static ArrayList<Color> defaultColours = new ArrayList<Color>(
+        Arrays.asList(Color.BLUE, Color.RED, Color.GREEN, Color.GOLD, Color.DARKMAGENTA, Color.CYAN)
     );
 
     /***
