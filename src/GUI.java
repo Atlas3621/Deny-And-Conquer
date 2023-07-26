@@ -59,7 +59,7 @@ public class GUI extends Application {
 
         NB.setOnAction(mouseEvent -> {
             try {
-
+                
                 Server myServer = new Server(30, 5, 5, 3);
                 Thread serverThread = new Thread(myServer);
 
