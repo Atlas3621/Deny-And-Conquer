@@ -53,7 +53,8 @@ public class EditableGameConfig extends GameConfig{
      * @throws IndexOutOfBoundsException playerId is not a legal player number
      */
     public void changePlayerColor(int playerId, Color color){
-        if(playerId < this.playerColors.size() || playerId < 0) throw new IndexOutOfBoundsException();
+        System.out.println("Changing color for "+ playerId);
+        if(playerId >= this.playerColors.size() || playerId < 0) throw new IndexOutOfBoundsException();
 
         playerColors.set(playerId, color);
     }

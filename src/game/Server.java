@@ -9,11 +9,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import game.settings.GameConfig;
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
 import tokens.ClearToken;
 import tokens.DrawToken;
 import tokens.FillToken;
+import tokens.GameConfigToken;
 import tokens.LiftToken;
 import tokens.WinnerToken;
 
@@ -40,6 +42,11 @@ public class Server implements Runnable
     static Color[] colorChoices = {Color.BLUE, Color.RED, Color.GREEN, Color.GOLD}; static int curChoice = 0;
 
     /**
+     * Configuration for the current game: board size and player colors
+     */
+    private GameConfig gameConfig;
+
+    /**
      * Chooses a color for a newly connected client, checking if there are any colors left to choose
      * @return A Color for a Client
      */
@@ -54,10 +61,15 @@ public class Server implements Runnable
         return choice;
     }
 
-    public Server(int canvasSize, int xSize, int ySize, int lineWidth) throws IOException {
+    public Server (int canvasSize, int lineWidth, GameConfig config) throws IOException {
         server = new ServerSocket(7070);
         address = InetAddress.getByName("localhost");
-        gameBoard = new Board(canvasSize, xSize, ySize, lineWidth);
+
+        config.getPlayerColors().toArray(colorChoices);
+
+        this.gameConfig = config;
+
+        gameBoard = new Board(canvasSize, config.getWidth(), config.getHeight(), lineWidth);
     }
 
     @Override
@@ -86,7 +98,11 @@ public class Server implements Runnable
 
                 // Send the newly connected client its color
                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+
+                GameConfigToken gameConfigToken = new GameConfigToken(gameConfig);
+
                 out.println(drawing);
+                out.println(gameConfigToken);
 
                 // We then add the newly validated client to our list from above, and start a new thread for it.
                 validClients.add(new Pair<Socket, Color>(clientSocket, drawing));

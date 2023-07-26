@@ -36,7 +36,7 @@ public class GameConfig {
         playerColors = defaultColours;
     }
     
-    /***
+    /**
      * Create a game configuration with specified width, height and player colors
      * @param width - number of cells in a grid per row
      * @param height - number of cells in a grid per column
@@ -49,14 +49,33 @@ public class GameConfig {
         playerColors = colors;
     }
 
+    /**
+     * @return number of columns on the board
+     */
     public int getWidth(){
         return width;
     }
 
+    /**
+     * @return number of rows on the board
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Get color for a player
+     * @param playerId - player number (starts from 0)
+     * @return {@link Color} for the specified player
+     */
+    public Color getColorForPlayer(int playerId) {
+        System.out.println(playerId);
+        return playerColors.get(playerId);
+    }
+
+    /**
+     * @return {@link ArrayList} of {@link Color colors} for each player
+     */
     public ArrayList<Color> getPlayerColors(){
         return playerColors;
     }

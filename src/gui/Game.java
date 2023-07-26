@@ -42,25 +42,7 @@ public class Game extends Application {
         float startPosX = 89.0f;
         float startPosY = 148.0f;
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                // The Spacing Stuff
-                CounterCanvas canvasToAdd = new CounterCanvas(30, 30);
-                canvasToAdd.setTranslateX(startPosX + (48.0f * i));
-                canvasToAdd.setTranslateY(startPosY + (48.0f * j));
-
-                // Setting a line width and a stroke color
-                GraphicsContext context = canvasToAdd.getGraphicsContext2D();
-                context.setStroke(Color.BLACK);
-                context.setLineWidth(3);
-
-                // Drawing our border
-                canvasToAdd.drawBorder();
-
-                // Adding to our grid list
-                gridList.add(canvasToAdd);
-            }
-        }
+        
 
         // Adding our grid to a Group
         Group rectGrid = new Group();
@@ -92,6 +74,26 @@ public class Game extends Application {
         titleText.setFont(new Font(30));
         rectGrid.getChildren().add(titleText);
 
+
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                // The Spacing Stuff
+                CounterCanvas canvasToAdd = new CounterCanvas(30, 30);
+                canvasToAdd.setTranslateX(startPosX + (48.0f * i));
+                canvasToAdd.setTranslateY(startPosY + (48.0f * j));
+
+                // Setting a line width and a stroke color
+                GraphicsContext context = canvasToAdd.getGraphicsContext2D();
+                context.setStroke(Color.BLACK);
+                context.setLineWidth(3);
+
+                // Drawing our border
+                canvasToAdd.drawBorder();
+
+                // Adding to our grid list
+                gridList.add(canvasToAdd);
+            }
+        }
         // Creating our Scene
         Scene scene = new Scene(rectGrid, 400, 600);
         stage.setTitle("Deny and Conquer: Player View");

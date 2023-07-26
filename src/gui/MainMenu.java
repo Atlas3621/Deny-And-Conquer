@@ -3,7 +3,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Objects;
 
-import game.Server;
 import javafx.application.Application;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -48,14 +47,8 @@ public class MainMenu extends Application {
 
         NB.setOnAction(mouseEvent -> {
             try {
-                
-                Server myServer = new Server(30, 5, 5, 3);
-                Thread serverThread = new Thread(myServer);
-
-                serverThread.start();
-
-                Game myGUI = new Game(myServer.address);
-                myGUI.start(stage);
+                Lobby lobbyView = new Lobby();
+                lobbyView.start(stage);
 
             } catch (Exception e) {
                 throw new RuntimeException(e);
