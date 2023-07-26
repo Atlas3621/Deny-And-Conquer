@@ -1,9 +1,21 @@
+package game;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
+
 import javafx.scene.paint.Color;
 import javafx.util.Pair;
-import tokens.*;
-
-import java.io.*; import java.net.*;
-import java.util.ArrayList;
+import tokens.ClearToken;
+import tokens.DrawToken;
+import tokens.FillToken;
+import tokens.LiftToken;
+import tokens.WinnerToken;
 
 /**
  * The TCP Server Class for our Deny and Conquer Game
@@ -107,7 +119,6 @@ public class Server implements Runnable
 
             try {
                 // Setup for TCP Connection
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader((socket.getInputStream())));
                 String inStr, outStr;
 

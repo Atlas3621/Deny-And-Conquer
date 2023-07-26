@@ -2,8 +2,8 @@ package tokens;
 
 import java.util.ArrayList;
 
+import game.settings.GameConfig;
 import javafx.scene.paint.Color;
-import settings.GameConfig;
 
 /**
  * A token to share the game configuration with board size and player colors

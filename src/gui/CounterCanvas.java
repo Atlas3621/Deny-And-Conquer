@@ -1,6 +1,6 @@
+package gui;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 /**
  * A Class that Extends Canvas from JavaFX with an Integrated Counter

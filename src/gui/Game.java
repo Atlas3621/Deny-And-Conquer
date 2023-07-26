@@ -1,3 +1,15 @@
+package gui;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import game.Client;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -10,21 +22,15 @@ import javafx.stage.Stage;
 import tokens.DrawToken;
 import tokens.LiftToken;
 
-import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
-
 // TODO: Look at generalizing these numbers later
 
 /**
  * The other client for the Deny-And-Conquer Game
  */
-public class ClientGUI extends Application {
+public class Game extends Application {
     private InetAddress ipAddress;
 
-    public ClientGUI (InetAddress ipAddress) {
+    public Game (InetAddress ipAddress) {
         this.ipAddress = ipAddress;
     }
 
@@ -75,7 +81,7 @@ public class ClientGUI extends Application {
         Color colourToUse = Color.web(OurColour);
 
         // Starting up a client-side thread to help with TCP receiving
-        DrawClientThread t = new DrawClientThread(gridList, MySocket);
+        Client t = new Client(gridList, MySocket);
         t.start();
 
         // Create our Title Text
