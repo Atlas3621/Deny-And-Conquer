@@ -84,47 +84,7 @@ public class Client extends Thread{
                     
                     WinnerToken fromInput = new WinnerToken(inStr);
                     
-                    
 
-
-                    // // Constructing scene displaying winner's color on client side
-                    // Scene canvasScene = this.rectList.get(0).getScene();
-
-                    // Group rectGrid = new Group();
-
-                    // Text topText = new Text(22, 86, "The Colour...");
-                    // topText.setWrappingWidth(356);
-                    // topText.setTextAlignment(TextAlignment.LEFT);
-                    // topText.setFont(new Font(20));
-                    // rectGrid.getChildren().add(topText);
-
-                    // Canvas winnerColor = new Canvas(356, 173);
-                    // winnerColor.setTranslateX(22);
-                    // winnerColor.setTranslateY(108);
-                    // winnerColor.getGraphicsContext2D().setFill(fromInput.getDrawColor());
-                    // winnerColor.getGraphicsContext2D().fillRect(0, 0, 356, 173);
-                    // rectGrid.getChildren().add(winnerColor);
-
-                    // Text bottomText = new Text(22, 317, "has won deny and conquer!");
-                    // bottomText.setWrappingWidth(356);
-                    // bottomText.setTextAlignment(TextAlignment.LEFT);
-                    // bottomText.setFont(new Font(20));
-                    // rectGrid.getChildren().add(bottomText);
-
-                    // // ref: https://www.javaguides.net/2020/09/javafx-quit-button-example-terminate.html
-                    // Button quitButton = new Button();
-                    // quitButton.setLayoutX(249);
-                    // quitButton.setLayoutY(406);
-                    // quitButton.setPrefWidth(129);
-                    // quitButton.setPrefHeight(40);
-                    // quitButton.setText("Quit");
-                    // quitButton.setOnAction((ActionEvent event) -> {
-                    //     Platform.exit();
-                    // });
-
-                    // rectGrid.getChildren().add(quitButton);
-
-                    // canvasScene.setRoot(rectGrid);
                     try {
                         Results resultWin = new Results(true, fromInput.getDrawColor(), fromInput.getDrawColor(), fromInput.getDrawColor(), fromInput.getDrawColor());
                         resultWin.showResults();
