@@ -101,7 +101,7 @@ public class GameSetup extends Application {
         //gets current host IP Address and inserts it in text field
         InetAddress localIP = InetAddress.getLocalHost();
         String host = localIP.getHostAddress();
-        Text ipAddress = (Text) mainScene.lookup("#IP Address");
+        Text ipAddress = (Text) mainScene.lookup("#IP_Address");
         ipAddress.setText(host);
 
 
