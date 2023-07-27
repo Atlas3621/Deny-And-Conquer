@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Text id="win_message" layoutX="96.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Winner is White!">
+      <Text id="win_message" layoutX="111.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="The Winner is">
          <font>
             <Font size="23.0" />
          </font>
