@@ -2,6 +2,8 @@ package gui;
 
 import java.util.Objects;
 
+import java.net.*;
+
 import game.Server;
 import game.settings.EditableGameConfig;
 import javafx.application.Application;
