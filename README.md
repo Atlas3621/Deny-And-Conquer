@@ -1,14 +1,15 @@
-Notes for token_change branch
+#Notes for token_change branch
 
 Modified Files: 
-Board.java
+
+#Board.java
 - changed winnerExists() so that we return true if board is fully filled, false if not
 - added isATie(), will check whether or not a draw has occured
 - changed colorOfWinner() so that now we find the winner based of who has the most
   squares filled. Note: will only call this function if isATie() is false.
   Ie. There is a single winner.
 
-Server.java
+#Server.java
 - in the -- if (outStr.startsWith("DRAW")) -- block, We will check if a winner exists.
   If a winner exists (ie. board is fully filled), you will check if the game has ended 
   in a tie or not.
@@ -19,7 +20,7 @@ Server.java
   if we did not end in a tie, continue with the same logic we had before where there 
   was just a single winner. 
 
-Client.java
+#Client.java
 - added a new if condition in -- while ((inStr = in.readLine()) != null) --
   called --> if (inStr.startsWith("TIE"))
   clients now can recieve a "TIE" message from the server, allowing clients to modify 
@@ -27,7 +28,7 @@ Client.java
 
 Note: winnerExists() work for one player
 
-Issues: 
+#Issues: 
 1.  winnerExists() doesn't work for multiplayer.
     Game will still terminate when >50% of the board is taken
     Players' GUI are out of sync after this termiation ^. 
