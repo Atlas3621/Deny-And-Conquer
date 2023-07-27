@@ -8,6 +8,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import gui.CounterCanvas;
+import gui.Results;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.Group;
@@ -18,6 +19,7 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import tokens.ClearToken;
 import tokens.DrawToken;
 import tokens.FillToken;
@@ -26,7 +28,7 @@ import tokens.WinnerToken;
 /**
  * An extension of the thread class used in the GUI/Client class to help with TCP
  */
-public class Client extends Thread {
+public class Client extends Thread{
     private Socket socket = null;
     private ArrayList<CounterCanvas> rectList = null;
 
@@ -78,46 +80,58 @@ public class Client extends Thread {
                 }
 
                 if (inStr.startsWith("WINNER")) {
-                    // Parsing Input w/ New Way
+                    // // Parsing Input w/ New Way
+                    
                     WinnerToken fromInput = new WinnerToken(inStr);
-                    // Constructing scene displaying winner's color on client side
-                    Scene canvasScene = this.rectList.get(0).getScene();
+                    
+                    
 
-                    Group rectGrid = new Group();
 
-                    Text topText = new Text(22, 86, "The Colour...");
-                    topText.setWrappingWidth(356);
-                    topText.setTextAlignment(TextAlignment.LEFT);
-                    topText.setFont(new Font(20));
-                    rectGrid.getChildren().add(topText);
+                    // // Constructing scene displaying winner's color on client side
+                    // Scene canvasScene = this.rectList.get(0).getScene();
 
-                    Canvas winnerColor = new Canvas(356, 173);
-                    winnerColor.setTranslateX(22);
-                    winnerColor.setTranslateY(108);
-                    winnerColor.getGraphicsContext2D().setFill(fromInput.getDrawColor());
-                    winnerColor.getGraphicsContext2D().fillRect(0, 0, 356, 173);
-                    rectGrid.getChildren().add(winnerColor);
+                    // Group rectGrid = new Group();
 
-                    Text bottomText = new Text(22, 317, "has won deny and conquer!");
-                    bottomText.setWrappingWidth(356);
-                    bottomText.setTextAlignment(TextAlignment.LEFT);
-                    bottomText.setFont(new Font(20));
-                    rectGrid.getChildren().add(bottomText);
+                    // Text topText = new Text(22, 86, "The Colour...");
+                    // topText.setWrappingWidth(356);
+                    // topText.setTextAlignment(TextAlignment.LEFT);
+                    // topText.setFont(new Font(20));
+                    // rectGrid.getChildren().add(topText);
 
-                    // ref: https://www.javaguides.net/2020/09/javafx-quit-button-example-terminate.html
-                    Button quitButton = new Button();
-                    quitButton.setLayoutX(249);
-                    quitButton.setLayoutY(406);
-                    quitButton.setPrefWidth(129);
-                    quitButton.setPrefHeight(40);
-                    quitButton.setText("Quit");
-                    quitButton.setOnAction((ActionEvent event) -> {
-                        Platform.exit();
-                    });
+                    // Canvas winnerColor = new Canvas(356, 173);
+                    // winnerColor.setTranslateX(22);
+                    // winnerColor.setTranslateY(108);
+                    // winnerColor.getGraphicsContext2D().setFill(fromInput.getDrawColor());
+                    // winnerColor.getGraphicsContext2D().fillRect(0, 0, 356, 173);
+                    // rectGrid.getChildren().add(winnerColor);
 
-                    rectGrid.getChildren().add(quitButton);
+                    // Text bottomText = new Text(22, 317, "has won deny and conquer!");
+                    // bottomText.setWrappingWidth(356);
+                    // bottomText.setTextAlignment(TextAlignment.LEFT);
+                    // bottomText.setFont(new Font(20));
+                    // rectGrid.getChildren().add(bottomText);
 
-                    canvasScene.setRoot(rectGrid);
+                    // // ref: https://www.javaguides.net/2020/09/javafx-quit-button-example-terminate.html
+                    // Button quitButton = new Button();
+                    // quitButton.setLayoutX(249);
+                    // quitButton.setLayoutY(406);
+                    // quitButton.setPrefWidth(129);
+                    // quitButton.setPrefHeight(40);
+                    // quitButton.setText("Quit");
+                    // quitButton.setOnAction((ActionEvent event) -> {
+                    //     Platform.exit();
+                    // });
+
+                    // rectGrid.getChildren().add(quitButton);
+
+                    // canvasScene.setRoot(rectGrid);
+                    try {
+                        Results resultWin = new Results(true, fromInput.getDrawColor(), fromInput.getDrawColor(), fromInput.getDrawColor(), fromInput.getDrawColor());
+                        resultWin.showResults();
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }    
+                    
 
                     // Debugging output, can be removed later.
                     System.out.println("CLIENT: The color " + fromInput.getDrawColor() + " has won the game of deny and conquer!");
@@ -125,6 +139,7 @@ public class Client extends Thread {
                     // Debugging to close server
                     out.println("goodbye");
                     System.out.println("CLIENT: sent goodbye to server");
+                       
                 }
 
                 // Disconnection string, as of yet unused
