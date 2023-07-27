@@ -1,6 +1,7 @@
 package game;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
 
 import javafx.scene.paint.Color;
 
@@ -97,25 +98,55 @@ public class Board {
     }
 
     /**
-     * A function that checks of a winner exists
-     * @return True if one does (i.e. >=50% of squares are controlled by them), False otherwise
+     * A function that checks if winner(s) exists
+     * @return True if one does (i.e. the board has been filled)
      */
     public boolean winnerExists() {
-        return squaresFilledDict.values().stream().anyMatch(x -> x >= Math.ceil(totalSquares * 0.5));
+        int totalSquaresFilled = 0;
+        for (int squaresFilled : squaresFilledDict.values()) {
+            totalSquaresFilled += squaresFilled;
+        }
+        return totalSquaresFilled == totalSquares;
+    }
+
+    /**
+     * A function that checks if the game ends in a tie
+     * @return True if a tie
+     */
+    public boolean isATie(){
+        int maxSquaresFilled = -1;
+        int numPlayersWithMaxSquares = 0;
+    
+        for (int squaresFilled : squaresFilledDict.values()) {
+            if (squaresFilled > maxSquaresFilled) {
+                maxSquaresFilled = squaresFilled;
+                numPlayersWithMaxSquares = 1;
+            } else if (squaresFilled == maxSquaresFilled) {
+                numPlayersWithMaxSquares++;
+            }
+        }
+        return numPlayersWithMaxSquares >= 2;
     }
 
     /**
      * A function that checks the color of the winner (only called if we know one exists)
-     * @return The color that controls >=50% of total squares
+     * Only used if there is a single winner
+     * @return The color that controls the most squares on the board
      */
     public Color colorOfWinner() {
-        final Color[] toReturn = new Color[1];
-        squaresFilledDict.forEach((x, y) -> {
-            if (squaresFilledDict.get(x) >= Math.ceil(totalSquares * 0.5)) {
-                toReturn[0] = x;
+        Color winningColor = null;
+        int maxSquaresFilled = -1;
+    
+        for (Map.Entry<Color, Integer> entry : squaresFilledDict.entrySet()) {
+            int squaresFilled = entry.getValue();
+            Color playerColor = entry.getKey();
+    
+            if (squaresFilled > maxSquaresFilled) {
+                maxSquaresFilled = squaresFilled;
+                winningColor = playerColor;
             }
-        });
-        return toReturn[0];
+        }
+        return winningColor;
     }
 
     /**

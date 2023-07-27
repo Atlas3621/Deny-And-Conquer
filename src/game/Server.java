@@ -39,7 +39,8 @@ public class Server implements Runnable
      * This array stores a preset collection of colors for clients to choose from, and the orders in which they are chosen.
      * Effectively, the length of the array is the maximum # of clients we can have.
      */
-    static Color[] colorChoices = {Color.BLUE, Color.RED, Color.GREEN, Color.GOLD}; static int curChoice = 0;
+    static Color[] colorChoices = { Color.BLUE, Color.RED, Color.GREEN, Color.GOLD };
+    static int curChoice = 0;
 
     /**
      * Configuration for the current game: board size and player colors
@@ -166,10 +167,14 @@ public class Server implements Runnable
                                     if (gameBoard.checkFilled(colorToUse, square)) {
                                         cOut.println(new FillToken(colorToUse, square));
                                         gameBoard.setFilled(colorToUse, square);
-
-                                        if (gameBoard.winnerExists()) {
-                                            System.out.println("WE HAVE A WINNER");
-                                            cOut.println(new WinnerToken(gameBoard.colorOfWinner()));
+                                        if (gameBoard.winnerExists()) { //game is over
+                                            if (gameBoard.isATie()){ //is it a tie?
+                                                cOut.println("TIE"); //send this "token" to clients
+                                            }
+                                            else { //not a tie, we have a signle winner, do the usual logic
+                                                System.out.println("WE HAVE A WINNER");
+                                                cOut.println(new WinnerToken(gameBoard.colorOfWinner())); 
+                                            }
                                             //cOut.println("goodbye");
                                         }
                                     }
