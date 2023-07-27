@@ -2,6 +2,8 @@ package gui;
 
 import java.util.Objects;
 
+import java.net.*;
+
 import game.Server;
 import game.settings.EditableGameConfig;
 import javafx.application.Application;
@@ -11,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 /**
@@ -94,6 +97,13 @@ public class GameSetup extends Application {
                 throw new RuntimeException(e);
             }
         });
+
+        //gets current host IP Address and inserts it in text field
+        InetAddress localIP = InetAddress.getLocalHost();
+        String host = localIP.getHostAddress();
+        Text ipAddress = (Text) mainScene.lookup("#IP_Address");
+        ipAddress.setText(host);
+
 
         stage.show();
     }
