@@ -173,7 +173,8 @@ public class Server implements Runnable
                                             }
                                             else { //not a tie, we have a signle winner, do the usual logic
                                                 System.out.println("WE HAVE A WINNER");
-                                                cOut.println(new WinnerToken(gameBoard.colorOfWinner())); 
+                                                cOut.println("TIE");
+                                                //cOut.println(new WinnerToken(gameBoard.colorOfWinner())); 
                                             }
                                             //cOut.println("goodbye");
                                         }

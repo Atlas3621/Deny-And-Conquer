@@ -78,7 +78,7 @@ public class Client extends Thread {
                     targetCanvas.resetCanvas();
                 }
 
-                if (inStr.startsWith("TIE")) {
+                if (inStr.equals("TIE")) {
                     // Constructing scene displaying winner's color on client side
                     Scene canvasScene = this.rectList.get(0).getScene();
 
