@@ -101,12 +101,16 @@ public class Board {
      * A function that checks if winner(s) exists
      * @return True if one does (i.e. the board has been filled)
      */
-    public boolean winnerExists() {
+    public boolean winnerExists(int numOfPlayers) {
+        int count = numOfPlayers * totalSquares;
         int totalSquaresFilled = 0;
         for (int squaresFilled : squaresFilledDict.values()) {
             totalSquaresFilled += squaresFilled;
         }
-        return totalSquaresFilled == totalSquares;
+        System.out.println("A winner Exists");
+        System.out.println(count);
+        System.out.println(totalSquaresFilled);
+        return totalSquaresFilled == count;
     }
 
     /**
@@ -114,6 +118,7 @@ public class Board {
      * @return True if a tie
      */
     public boolean isATie(){
+        System.out.println("Entered isATie");
         int maxSquaresFilled = -1;
         int numPlayersWithMaxSquares = 0;
     
@@ -134,6 +139,7 @@ public class Board {
      * @return The color that controls the most squares on the board
      */
     public Color colorOfWinner() {
+        System.out.println("Entered colorOfWinner");
         Color winningColor = null;
         int maxSquaresFilled = -1;
     

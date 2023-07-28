@@ -167,14 +167,16 @@ public class Server implements Runnable
                                     if (gameBoard.checkFilled(colorToUse, square)) {
                                         cOut.println(new FillToken(colorToUse, square));
                                         gameBoard.setFilled(colorToUse, square);
-                                        if (gameBoard.winnerExists()) { //game is over
+                                        int numOfPlayers = validClients.size();
+                                        if (gameBoard.winnerExists(numOfPlayers)) { //game is over
                                             if (gameBoard.isATie()){ //is it a tie?
+                                                System.out.println("isATie is true");
                                                 cOut.println("TIE"); //send this "token" to clients
                                             }
                                             else { //not a tie, we have a signle winner, do the usual logic
                                                 System.out.println("WE HAVE A WINNER");
-                                                cOut.println("TIE");
-                                                //cOut.println(new WinnerToken(gameBoard.colorOfWinner())); 
+                                                //cOut.println("TIE");
+                                                cOut.println(new WinnerToken(gameBoard.colorOfWinner())); 
                                             }
                                             //cOut.println("goodbye");
                                         }
