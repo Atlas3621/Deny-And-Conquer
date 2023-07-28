@@ -91,7 +91,12 @@ public class Results{
                 bottomLeft.getGraphicsContext2D().setFill(color3);
                 bottomLeft.getGraphicsContext2D().fillRect(0,0,126,128);
                 bottomRight.getGraphicsContext2D().setFill(color4);
-                bottomRight.getGraphicsContext2D().fillRect(0,0,126,128);                
+                bottomRight.getGraphicsContext2D().fillRect(0,0,126,128); 
+                
+                System.out.println("colour 1 is " + color1);
+                System.out.println("colour 1 is " + color2);
+                System.out.println("colour 1 is " + color3);
+                System.out.println("colour 1 is " + color4);
             }
             //button to end game and leave
             Button quit = (Button) scene.lookup("#quit_game");

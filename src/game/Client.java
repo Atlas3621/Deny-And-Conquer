@@ -121,7 +121,7 @@ public class Client extends Thread{
                     // canvasScene.setRoot(rectGrid);
                     
                     Color tie[];
-                    tie = new Color[4];
+                    tie = new Color[5];
                     tie = Board.tieColours(); 
 
                     Color tie1 = tie[0];

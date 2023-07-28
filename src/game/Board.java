@@ -152,38 +152,25 @@ public class Board {
     }
 
     public static Color[] tieColours(){
-        Color drawColors[];
-        drawColors = new Color[4];
-
-        int filled[];
-        filled = new int[4];
+        Color drawColors[] = {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
+        int maxSquaresFilled = -1;
 
         int x = 0;
-        int y = 0;
-
-        Boolean first = true;
 
         for (Map.Entry<Color, Integer> entry : squaresFilledDict.entrySet()) {
-            // int squaresFilled = entry.getValue();
+            int squaresFilled = entry.getValue();
             Color playerColor = entry.getKey();
     
-            filled[x] = entry.getValue();
-
-            if(filled[x] > filled[x-1] && first == false){
+            if (squaresFilled > maxSquaresFilled) {
+                maxSquaresFilled = squaresFilled;
                 drawColors[0] = playerColor;
-                y = 1;
+                x = 1;
             }
-            else if(first == true){
-                drawColors[y] = playerColor;
-                first = false;
-                y++;
-            }
-            else if(filled[x] == filled[x-1] && first == false){
-                drawColors[y] = playerColor;
-                y++;
+            else if (squaresFilled == maxSquaresFilled){
+                drawColors[x] = playerColor;
+                x++;
             }
 
-            x++;
         } 
  
         return drawColors;
