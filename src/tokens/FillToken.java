@@ -9,6 +9,8 @@ import javafx.scene.paint.Color;
 public class FillToken {
     private int squareNum;
     private Color drawColor;
+    private LiftToken lift;
+
 
     /**
      * @param color The color to fill the square with on the other screen
