@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 public class FillToken {
     private int squareNum;
     private Color drawColor;
-    private LiftToken lift;
+
 
 
     /**
