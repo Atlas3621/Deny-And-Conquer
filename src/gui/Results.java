@@ -42,7 +42,7 @@ public class Results{
     }
 
 //  used website below to find how to start stage without run() or start(Stage stage) so method could be called from client.java
-//  https://stackoverflow.com/questions/34873673/load-fxml-as-background-process-javafx
+//  ref: https://stackoverflow.com/questions/34873673/load-fxml-as-background-process-javafx
     public void showResults(){
         Task<Parent> loadResult = new Task<Parent>(){
             @Override

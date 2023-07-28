@@ -2,6 +2,7 @@ package game;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Arrays;
 
 import javafx.scene.paint.Color;
 
@@ -12,7 +13,7 @@ import javafx.scene.paint.Color;
  */
 public class Board {
     private final ArrayList<GamePiece> grid; // The arraylist of game-pieces that we ultimately use as the grid.
-    private final Hashtable<Color, Integer> squaresFilledDict = new Hashtable<Color, Integer>(); // A dictionary that tracks how many squares in the grid each color has filled
+    private final static Hashtable<Color, Integer> squaresFilledDict = new Hashtable<Color, Integer>(); // A dictionary that tracks how many squares in the grid each color has filled
     private final int totalSquares; // Total # of squares in the grid
 
     /**
@@ -148,6 +149,44 @@ public class Board {
             }
         }
         return winningColor;
+    }
+
+    public static Color[] tieColours(){
+        Color drawColors[];
+        drawColors = new Color[4];
+
+        int filled[];
+        filled = new int[4];
+
+        int x = 0;
+        int y = 0;
+
+        Boolean first = true;
+
+        for (Map.Entry<Color, Integer> entry : squaresFilledDict.entrySet()) {
+            // int squaresFilled = entry.getValue();
+            Color playerColor = entry.getKey();
+    
+            filled[x] = entry.getValue();
+
+            if(filled[x] > filled[x-1] && first == false){
+                drawColors[0] = playerColor;
+                y = 1;
+            }
+            else if(first == true){
+                drawColors[y] = playerColor;
+                first = false;
+                y++;
+            }
+            else if(filled[x] == filled[x-1] && first == false){
+                drawColors[y] = playerColor;
+                y++;
+            }
+
+            x++;
+        } 
+ 
+        return drawColors;
     }
 
     /**

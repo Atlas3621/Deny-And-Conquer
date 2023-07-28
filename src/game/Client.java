@@ -82,43 +82,61 @@ public class Client extends Thread{
 
                 if (inStr.equals("TIE")) {
                     // Constructing scene displaying winner's color on client side
-                    Scene canvasScene = this.rectList.get(0).getScene();
+                    // Scene canvasScene = this.rectList.get(0).getScene();
 
-                    Group rectGrid = new Group();
+                    // Group rectGrid = new Group();
 
-                    Text topText = new Text(22, 86, "It was A Draw...");
-                    topText.setWrappingWidth(356);
-                    topText.setTextAlignment(TextAlignment.LEFT);
-                    topText.setFont(new Font(20));
-                    rectGrid.getChildren().add(topText);
+                    // Text topText = new Text(22, 86, "It was A Draw...");
+                    // topText.setWrappingWidth(356);
+                    // topText.setTextAlignment(TextAlignment.LEFT);
+                    // topText.setFont(new Font(20));
+                    // rectGrid.getChildren().add(topText);
 
-                    Canvas winnerColor = new Canvas(356, 173);
-                    winnerColor.setTranslateX(22);
-                    winnerColor.setTranslateY(108);
-                    winnerColor.getGraphicsContext2D().setFill(Color.BLACK);
-                    winnerColor.getGraphicsContext2D().fillRect(0, 0, 356, 173);
-                    rectGrid.getChildren().add(winnerColor);
+                    // Canvas winnerColor = new Canvas(356, 173);
+                    // winnerColor.setTranslateX(22);
+                    // winnerColor.setTranslateY(108);
+                    // winnerColor.getGraphicsContext2D().setFill(Color.BLACK);
+                    // winnerColor.getGraphicsContext2D().fillRect(0, 0, 356, 173);
+                    // rectGrid.getChildren().add(winnerColor);
 
-                    Text bottomText = new Text(22, 317, "Play Again!");
-                    bottomText.setWrappingWidth(356);
-                    bottomText.setTextAlignment(TextAlignment.LEFT);
-                    bottomText.setFont(new Font(20));
-                    rectGrid.getChildren().add(bottomText);
+                    // Text bottomText = new Text(22, 317, "Play Again!");
+                    // bottomText.setWrappingWidth(356);
+                    // bottomText.setTextAlignment(TextAlignment.LEFT);
+                    // bottomText.setFont(new Font(20));
+                    // rectGrid.getChildren().add(bottomText);
 
-                    // ref: https://www.javaguides.net/2020/09/javafx-quit-button-example-terminate.html
-                    Button quitButton = new Button();
-                    quitButton.setLayoutX(249);
-                    quitButton.setLayoutY(406);
-                    quitButton.setPrefWidth(129);
-                    quitButton.setPrefHeight(40);
-                    quitButton.setText("Quit");
-                    quitButton.setOnAction((ActionEvent event) -> {
-                        Platform.exit();
-                    });
+                    // // ref: https://www.javaguides.net/2020/09/javafx-quit-button-example-terminate.html
+                    // Button quitButton = new Button();
+                    // quitButton.setLayoutX(249);
+                    // quitButton.setLayoutY(406);
+                    // quitButton.setPrefWidth(129);
+                    // quitButton.setPrefHeight(40);
+                    // quitButton.setText("Quit");
+                    // quitButton.setOnAction((ActionEvent event) -> {
+                    //     Platform.exit();
+                    // });
 
-                    rectGrid.getChildren().add(quitButton);
+                    // rectGrid.getChildren().add(quitButton);
 
-                    canvasScene.setRoot(rectGrid);
+                    // canvasScene.setRoot(rectGrid);
+                    
+                    Color tie[];
+                    tie = new Color[4];
+                    tie = Board.tieColours(); 
+
+                    Color tie1 = tie[0];
+                    Color tie2 = tie[1];
+                    Color tie3 = tie[2];
+                    Color tie4 = tie[3];
+
+
+                    
+                    try {
+                        Results resultTie = new Results(false, tie1, tie2, tie3, tie4);
+                        resultTie.showResults();
+                    } catch (Exception e) {
+                        // TODO: handle exception
+                    }
                 }
 
                 if (inStr.startsWith("WINNER")) {
