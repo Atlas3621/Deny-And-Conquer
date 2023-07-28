@@ -39,7 +39,8 @@ public class Server implements Runnable
      * This array stores a preset collection of colors for clients to choose from, and the orders in which they are chosen.
      * Effectively, the length of the array is the maximum # of clients we can have.
      */
-    static Color[] colorChoices = {Color.BLUE, Color.RED, Color.GREEN, Color.GOLD}; static int curChoice = 0;
+    static Color[] colorChoices = { Color.BLUE, Color.RED, Color.GREEN, Color.GOLD };
+    static int curChoice = 0;
 
     /**
      * Configuration for the current game: board size and player colors
@@ -166,11 +167,28 @@ public class Server implements Runnable
                                     if (gameBoard.checkFilled(colorToUse, square)) {
                                         cOut.println(new FillToken(colorToUse, square));
                                         gameBoard.setFilled(colorToUse, square);
-
-                                        if (gameBoard.winnerExists()) {
-                                            System.out.println("WE HAVE A WINNER");
-                                            cOut.println(new WinnerToken(gameBoard.colorOfWinner()));
-                                            //cOut.println("goodbye");
+                                        int numOfPlayers = validClients.size();
+                                        if (gameBoard.winnerExists(numOfPlayers)) {
+                                            if (gameBoard.isATie()){
+                                                validClients.forEach(vc -> {
+                                                    try {
+                                                        PrintWriter cout = new PrintWriter(vc.getKey().getOutputStream(), true);
+                                                        cout.println("TIE");
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                validClients.forEach(vc -> {
+                                                    try {
+                                                        PrintWriter cout = new PrintWriter(vc.getKey().getOutputStream(), true);
+                                                        cout.println(new WinnerToken(gameBoard.colorOfWinner())); 
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                });
+                                            }
                                         }
                                     }
 

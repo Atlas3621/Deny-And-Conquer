@@ -16,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.image.PixelWriter;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -77,6 +78,47 @@ public class Client extends Thread{
                     // Clearing the grid entry (client-side)
                     CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
                     targetCanvas.resetCanvas();
+                }
+
+                if (inStr.equals("TIE")) {
+                    // Constructing scene displaying winner's color on client side
+                    Scene canvasScene = this.rectList.get(0).getScene();
+
+                    Group rectGrid = new Group();
+
+                    Text topText = new Text(22, 86, "It was A Draw...");
+                    topText.setWrappingWidth(356);
+                    topText.setTextAlignment(TextAlignment.LEFT);
+                    topText.setFont(new Font(20));
+                    rectGrid.getChildren().add(topText);
+
+                    Canvas winnerColor = new Canvas(356, 173);
+                    winnerColor.setTranslateX(22);
+                    winnerColor.setTranslateY(108);
+                    winnerColor.getGraphicsContext2D().setFill(Color.BLACK);
+                    winnerColor.getGraphicsContext2D().fillRect(0, 0, 356, 173);
+                    rectGrid.getChildren().add(winnerColor);
+
+                    Text bottomText = new Text(22, 317, "Play Again!");
+                    bottomText.setWrappingWidth(356);
+                    bottomText.setTextAlignment(TextAlignment.LEFT);
+                    bottomText.setFont(new Font(20));
+                    rectGrid.getChildren().add(bottomText);
+
+                    // ref: https://www.javaguides.net/2020/09/javafx-quit-button-example-terminate.html
+                    Button quitButton = new Button();
+                    quitButton.setLayoutX(249);
+                    quitButton.setLayoutY(406);
+                    quitButton.setPrefWidth(129);
+                    quitButton.setPrefHeight(40);
+                    quitButton.setText("Quit");
+                    quitButton.setOnAction((ActionEvent event) -> {
+                        Platform.exit();
+                    });
+
+                    rectGrid.getChildren().add(quitButton);
+
+                    canvasScene.setRoot(rectGrid);
                 }
 
                 if (inStr.startsWith("WINNER")) {

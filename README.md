@@ -1,3 +1,7 @@
+# Notes for token_change branch
+1. on game end, the winning/draw UI is only displayed on one client,not all
+
+
 # Deny and Conquer - Due August 6
 
 Deny and Conquer is a multiplayer real-time game written in Java using socket programing.
