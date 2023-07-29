@@ -2,6 +2,7 @@ package game;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Arrays;
 
 import javafx.scene.paint.Color;
 
@@ -12,7 +13,7 @@ import javafx.scene.paint.Color;
  */
 public class Board {
     private final ArrayList<GamePiece> grid; // The arraylist of game-pieces that we ultimately use as the grid.
-    private final Hashtable<Color, Integer> squaresFilledDict = new Hashtable<Color, Integer>(); // A dictionary that tracks how many squares in the grid each color has filled
+    private final static Hashtable<Color, Integer> squaresFilledDict = new Hashtable<Color, Integer>(); // A dictionary that tracks how many squares in the grid each color has filled
     private final int totalSquares; // Total # of squares in the grid
 
     /**
@@ -148,6 +149,32 @@ public class Board {
             }
         }
         return winningColor;
+    }
+
+    //function used to get which colours tied during the game. returns colours with equal amount of squares
+    public Color[] tieColours(){
+        Color drawColors[] = {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
+        int maxSquaresFilled = -1;
+
+        int x = 0;
+
+        for (Map.Entry<Color, Integer> entry : squaresFilledDict.entrySet()) {
+            int squaresFilled = entry.getValue();
+            Color playerColor = entry.getKey();
+    
+            if (squaresFilled > maxSquaresFilled) {
+                maxSquaresFilled = squaresFilled;
+                drawColors[0] = playerColor;
+                x = 1;
+            }
+            else if (squaresFilled == maxSquaresFilled){
+                drawColors[x] = playerColor;
+                x++;
+            }
+
+        } 
+ 
+        return drawColors;
     }
 
     /**

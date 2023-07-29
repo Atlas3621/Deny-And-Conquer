@@ -91,6 +91,6 @@
          </children>
       </VBox>
       <Text layoutX="14.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current IP:" />
-      <Text id="IP_Address" layoutX="74.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP Address" />
+      <Text id="IP_Address" layoutX="85.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP Address" />
     </children>
 </AnchorPane>
