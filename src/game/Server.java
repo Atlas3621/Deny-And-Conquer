@@ -17,7 +17,6 @@ import tokens.DrawToken;
 import tokens.FillToken;
 import tokens.GameConfigToken;
 import tokens.LiftToken;
-import tokens.TieToken;
 import tokens.WinnerToken;
 
 /**
