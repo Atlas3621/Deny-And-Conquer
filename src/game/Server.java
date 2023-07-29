@@ -17,6 +17,7 @@ import tokens.DrawToken;
 import tokens.FillToken;
 import tokens.GameConfigToken;
 import tokens.LiftToken;
+import tokens.TieToken;
 import tokens.WinnerToken;
 
 /**
@@ -173,7 +174,10 @@ public class Server implements Runnable
                                                 validClients.forEach(vc -> {
                                                     try {
                                                         PrintWriter cout = new PrintWriter(vc.getKey().getOutputStream(), true);
-                                                        cout.println("TIE");
+                                                        //gets the colours that tied
+                                                        Color tie[] = gameBoard.tieColours();
+                                                        //puts colours into string to be sent to client
+                                                        cout.println("TIE " + tie[0] +" "+ tie[1] +" "+ tie[2] +" "+ tie[3]);
                                                     } catch (IOException e) {
                                                         throw new RuntimeException(e);
                                                     }

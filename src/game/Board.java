@@ -151,7 +151,8 @@ public class Board {
         return winningColor;
     }
 
-    public static Color[] tieColours(){
+    //function used to get which colours tied during the game. returns colours with equal amount of squares
+    public Color[] tieColours(){
         Color drawColors[] = {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
         int maxSquaresFilled = -1;
 

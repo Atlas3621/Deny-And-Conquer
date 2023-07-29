@@ -84,6 +84,13 @@ public class Results{
                 Canvas bottomLeft = (Canvas) scene.lookup("#colour3");
                 Canvas bottomRight = (Canvas) scene.lookup("#colour4");
 
+                if (color3 == Color.web("0xffffffff")){
+                    color3 = color1;
+                }
+                if (color4 == Color.web("0xffffffff")){
+                    color4 = color2;
+                }
+
                 topLeft.getGraphicsContext2D().setFill(color1);
                 topLeft.getGraphicsContext2D().fillRect(0,0,126,128);
                 topRight.getGraphicsContext2D().setFill(color2);
