@@ -101,12 +101,13 @@ public class Board {
      * A function that checks if winner(s) exists
      * @return True if one does (i.e. the board has been filled)
      */
-    public boolean winnerExists() {
+    public boolean winnerExists(int numOfPlayers) {
+        int count = numOfPlayers * totalSquares;
         int totalSquaresFilled = 0;
         for (int squaresFilled : squaresFilledDict.values()) {
             totalSquaresFilled += squaresFilled;
         }
-        return totalSquaresFilled == totalSquares;
+        return totalSquaresFilled == count;
     }
 
     /**

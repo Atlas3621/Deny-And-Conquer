@@ -81,7 +81,7 @@ public class Client extends Thread {
                     targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
                 }
 
-                if (inStr.startsWith("TIE")) {
+                if (inStr.equals("TIE")) {
                     // Constructing scene displaying winner's color on client side
                     Scene canvasScene = this.rectList.get(0).getScene();
 

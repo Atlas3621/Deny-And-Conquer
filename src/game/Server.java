@@ -167,15 +167,28 @@ public class Server implements Runnable
                                     if (gameBoard.checkFilled(colorToUse, square)) {
                                         cOut.println(new FillToken(colorToUse, square));
                                         gameBoard.setFilled(colorToUse, square);
-                                        if (gameBoard.winnerExists()) { //game is over
-                                            if (gameBoard.isATie()){ //is it a tie?
-                                                cOut.println("TIE"); //send this "token" to clients
+                                        int numOfPlayers = validClients.size();
+                                        if (gameBoard.winnerExists(numOfPlayers)) {
+                                            if (gameBoard.isATie()){
+                                                validClients.forEach(vc -> {
+                                                    try {
+                                                        PrintWriter cout = new PrintWriter(vc.getKey().getOutputStream(), true);
+                                                        cout.println("TIE");
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                });
                                             }
-                                            else { //not a tie, we have a signle winner, do the usual logic
-                                                System.out.println("WE HAVE A WINNER");
-                                                cOut.println(new WinnerToken(gameBoard.colorOfWinner())); 
+                                            else {
+                                                validClients.forEach(vc -> {
+                                                    try {
+                                                        PrintWriter cout = new PrintWriter(vc.getKey().getOutputStream(), true);
+                                                        cout.println(new WinnerToken(gameBoard.colorOfWinner())); 
+                                                    } catch (IOException e) {
+                                                        throw new RuntimeException(e);
+                                                    }
+                                                });
                                             }
-                                            //cOut.println("goodbye");
                                         }
                                     }
 
