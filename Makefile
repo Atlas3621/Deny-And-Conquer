@@ -2,12 +2,12 @@
 
 # Change the path to your javafx installation
 # Guide: https://openjfx.io/openjfx-docs/#install-javafx
-JAVAFX_LIB = /opt/javafx-sdk-20.0.1/lib
+JAVAFX_LIB = /Users/nialls/Downloads/javafx-sdk-20.0.2/lib
 
 # Compiler and flags
 JAVAC = javac
 JAVAC_FLAGS = -d bin -sourcepath src
-JAVAFX_FLAGS = --module-path $(JAVAFX_LIB) --add-modules javafx.controls,javafx.fxml
+JAVAFX_FLAGS = --module-path $(JAVAFX_LIB) --add-modules javafx.swing,javafx.graphics,javafx.fxml,javafx.media,javafx.controls
 
 # Executable
 APP = App

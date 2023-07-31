@@ -10,6 +10,8 @@ public class FillToken {
     private int squareNum;
     private Color drawColor;
 
+
+
     /**
      * @param color The color to fill the square with on the other screen
      * @param squareNum The index of the square in the list
