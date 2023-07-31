@@ -9,18 +9,8 @@ import java.util.ArrayList;
 
 import gui.CounterCanvas;
 import gui.Results;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 import tokens.ClearToken;
 import tokens.DrawToken;
 import tokens.FillToken;
@@ -69,7 +59,7 @@ public class Client extends Thread{
                     CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
                     targetCanvas.getGraphicsContext2D().setFill(fromInput.getDrawColor());
 
-                //       targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
+                    targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
 
                     targetCanvas.filled = true;
                 }
