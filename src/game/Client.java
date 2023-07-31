@@ -69,7 +69,9 @@ public class Client extends Thread{
                     // Filling the grid entry (client-side)
                     CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
                     targetCanvas.getGraphicsContext2D().setFill(fromInput.getDrawColor());
-                    targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
+
+                //       targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
+
                     targetCanvas.filled = true;
                 }
 
@@ -77,8 +79,9 @@ public class Client extends Thread{
                     // Parsing Input w/ New Way
                     ClearToken fromInput = new ClearToken(inStr);
                     // Clearing the grid entry (client-side)
-                    CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
-                    targetCanvas.resetCanvas();
+                   CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
+              //      targetCanvas.resetCanvas();
+                    targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
                 }
 
                 if (inStr.startsWith("TIE")) {
