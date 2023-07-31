@@ -109,7 +109,8 @@ public class GameSetup extends Application {
             //goes through ip addresses until it reaches router ip
             while (addresses.hasMoreElements()) {
                 InetAddress address = addresses.nextElement();
-                if (x == 6){
+                String addy = address.getHostAddress().toString();
+                if (!addy.startsWith("f") && !addy.startsWith("0") && !address.isSiteLocalAddress()){
                 host = address.getHostAddress();
                 Text ipAddress = (Text) mainScene.lookup("#IP_Address");
                 ipAddress.setText(host);
