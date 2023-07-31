@@ -164,6 +164,25 @@ public class Server implements Runnable
                                     PrintWriter cOut = new PrintWriter(s.getKey().getOutputStream(), true);
                                     cOut.println(new DrawToken(colorToUse, square, xCord, yCord));
 
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            });
+
+                        }
+
+                    } else if (outStr.startsWith("LIFT")) {
+                        LiftToken fromInput = new LiftToken(outStr);
+                        int squareToClear = fromInput.getSquareNum();
+                        
+                        Color colorToUse = fromInput.getDrawColor();
+                        int square = fromInput.getSquareNum();
+
+                        if (gameBoard.isAvailableToDraw(fromInput.getDrawColor(), squareToClear)) {
+                            validClients.forEach(s -> {
+                                try {
+                                    PrintWriter cOut = new PrintWriter(s.getKey().getOutputStream(), true);
+
                                     if (gameBoard.checkFilled(colorToUse, square)) {
                                         cOut.println(new FillToken(colorToUse, square));
                                         gameBoard.setFilled(colorToUse, square);
@@ -194,26 +213,11 @@ public class Server implements Runnable
                                             }
                                         }
                                     }
-
-                                } catch (IOException e) {
-                                    throw new RuntimeException(e);
-                                }
-                            });
-
-                        }
-
-                    } else if (outStr.startsWith("LIFT")) {
-                        LiftToken fromInput = new LiftToken(outStr);
-                        int squareToClear = fromInput.getSquareNum();
-
-                        if (gameBoard.isAvailableToDraw(fromInput.getDrawColor(), squareToClear)) {
-                            ClearToken newToken = new ClearToken(squareToClear);
-                            gameBoard.resetPiece(squareToClear);
-
-                            validClients.forEach(s -> {
-                                try {
-                                    PrintWriter cOut = new PrintWriter(s.getKey().getOutputStream(), true);
-                                    cOut.println(newToken);
+                                    else {
+                                        ClearToken newToken = new ClearToken(squareToClear);
+                                        gameBoard.resetPiece(squareToClear);
+                                        cOut.println(newToken);
+                                    }
                                 } catch (IOException e) {
                                     throw new RuntimeException(e);
                                 }

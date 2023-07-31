@@ -69,8 +69,8 @@ public class Client extends Thread{
                     ClearToken fromInput = new ClearToken(inStr);
                     // Clearing the grid entry (client-side)
                    CounterCanvas targetCanvas = rectList.get(fromInput.getSquareNum());
-              //      targetCanvas.resetCanvas();
-                    targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
+                   targetCanvas.resetCanvas();
+                    // targetCanvas.getGraphicsContext2D().fillRect(2, 2, 26, 26);
                 }
 
                 if (inStr.startsWith("TIE")) {
