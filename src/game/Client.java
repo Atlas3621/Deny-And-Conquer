@@ -24,7 +24,6 @@ import javafx.stage.Stage;
 import tokens.ClearToken;
 import tokens.DrawToken;
 import tokens.FillToken;
-import tokens.TieToken;
 import tokens.WinnerToken;
 
 /**

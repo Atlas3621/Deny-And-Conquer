@@ -1,5 +1,6 @@
 package gui;
 
+import java.util.Enumeration;
 import java.util.Objects;
 
 import java.net.*;
@@ -99,10 +100,24 @@ public class GameSetup extends Application {
         });
 
         //gets current host IP Address and inserts it in text field
-        InetAddress localIP = InetAddress.getLocalHost();
-        String host = localIP.getHostAddress();
-        Text ipAddress = (Text) mainScene.lookup("#IP_Address");
-        ipAddress.setText(host);
+        Enumeration<NetworkInterface> network = NetworkInterface.getNetworkInterfaces();
+        String host;
+        int x = 0;
+        while (network.hasMoreElements()) {
+            NetworkInterface networkInterface = network.nextElement();
+            Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
+            //goes through ip addresses until it reaches router ip
+            while (addresses.hasMoreElements()) {
+                InetAddress address = addresses.nextElement();
+                if (x == 6){
+                host = address.getHostAddress();
+                Text ipAddress = (Text) mainScene.lookup("#IP_Address");
+                ipAddress.setText(host);
+                }
+                x++;
+            }
+        } 
+      
 
 
         stage.show();
