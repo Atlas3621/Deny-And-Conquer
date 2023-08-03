@@ -102,7 +102,6 @@ public class GameSetup extends Application {
         //gets current host IP Address and inserts it in text field
         Enumeration<NetworkInterface> network = NetworkInterface.getNetworkInterfaces();
         String host;
-        int x = 0;
         while (network.hasMoreElements()) {
             NetworkInterface networkInterface = network.nextElement();
             Enumeration<InetAddress> addresses = networkInterface.getInetAddresses();
@@ -110,12 +109,11 @@ public class GameSetup extends Application {
             while (addresses.hasMoreElements()) {
                 InetAddress address = addresses.nextElement();
                 String addy = address.getHostAddress().toString();
-                if (!addy.startsWith("f") && !addy.startsWith("0") && !address.isSiteLocalAddress()){
+                if (!addy.startsWith("f") && !addy.startsWith("0") && address.isSiteLocalAddress() == false){
                 host = address.getHostAddress();
                 Text ipAddress = (Text) mainScene.lookup("#IP_Address");
                 ipAddress.setText(host);
                 }
-                x++;
             }
         } 
       
