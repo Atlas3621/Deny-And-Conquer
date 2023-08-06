@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="457.0" prefWidth="478.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <Text layoutX="103.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DENY AND CONQUER" wrappingWidth="292.943359375">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Text>
+      <Text layoutX="189.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Setup">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Label layoutX="34.0" layoutY="109.0" prefHeight="23.0" prefWidth="102.0" text="Grid width" />
+      <ChoiceBox id="Width-Selector" layoutX="160.0" layoutY="108.0" prefHeight="26.0" prefWidth="64.0" />
+      <Label layoutX="32.0" layoutY="142.0" prefHeight="23.0" prefWidth="102.0" text="Grid height" />
+      <ChoiceBox id="Height-Selector" layoutX="160.0" layoutY="141.0" prefHeight="26.0" prefWidth="64.0" />
+      <ButtonBar layoutX="211.0" layoutY="397.0" prefHeight="40.0" prefWidth="242.0">
+        <buttons>
+              <Button id="Leave-GameSetup" cancelButton="true" mnemonicParsing="false" prefHeight="30.0" prefWidth="118.0" text="Leave" />
+              <Button id="Start-Game" mnemonicParsing="false" text="Start Game" />
+        </buttons>
+      </ButtonBar>
+      <VBox id="Players-Pane" layoutX="23.0" layoutY="191.0" prefHeight="200.0" prefWidth="419.0">
+         <children>
+            <Pane prefHeight="43.0" prefWidth="419.0">
+               <padding>
+                  <Insets bottom="1.0" />
+               </padding>
+               <children>
+                  <Text layoutX="14.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 1">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ColorPicker id="Player-1-Color-Selector" layoutX="142.0" layoutY="9.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="43.0" prefWidth="419.0">
+               <padding>
+                  <Insets bottom="1.0" />
+               </padding>
+               <children>
+                  <Text layoutX="14.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 2">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ColorPicker id="Player-2-Color-Selector" layoutX="142.0" layoutY="9.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="43.0" prefWidth="419.0">
+               <padding>
+                  <Insets bottom="1.0" />
+               </padding>
+               <children>
+                  <Text layoutX="14.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 3">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ColorPicker id="Player-3-Color-Selector" layoutX="142.0" layoutY="9.0" />
+               </children>
+            </Pane>
+            <Pane prefHeight="43.0" prefWidth="419.0">
+               <padding>
+                  <Insets bottom="1.0" />
+               </padding>
+               <children>
+                  <Text layoutX="14.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Player 4">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+                  <ColorPicker id="Player-4-Color-Selector" layoutX="142.0" layoutY="9.0" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+      <Text layoutX="14.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Current IP:" />
+      <Text id="IP_Address" layoutX="85.0" layoutY="426.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IP Address" />
+    </children>
+</AnchorPane>
